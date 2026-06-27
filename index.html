@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GroundTruth - A framework for evaluating claims</title>
+  <meta name="description" content="Ten named failure modes. A five-band evidence rating. One AI prompt tool. Everything you need to tell the difference between a fact and a talking point.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    /* === TOKENS === */
+    :root {
+      --bg:        #0A0F1E;
+      --bg-card:   #111827;
+      --bg-card-2: #141d2e;
+      --border:    #1f2d45;
+      --border-2:  #2a3d58;
+      --text:      #E8EFFE;
+      --text-soft: #8899BB;
+      --text-dim:  #4a5978;
+      --blue:      #3B82F6;
+      --blue-dim:  #1d4ed8;
+      --green:     #10B981;
+      --amber:     #F59E0B;
+      --red:       #EF4444;
+      --purple:    #8B5CF6;
+    }
+
+    /* === RESET & BASE === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* === LAYOUT === */
+    .wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* === NAV === */
+    nav {
+      border-bottom: 1px solid var(--border);
+      padding: 18px 0;
+      position: sticky;
+      top: 0;
+      background: rgba(10, 15, 30, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    nav .inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .wordmark {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .wordmark span {
+      color: var(--blue);
+    }
+
+    nav .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    nav .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    nav .nav-links a:hover { color: var(--text); }
+
+    /* === HERO === */
+    .hero {
+      padding: 80px 0 72px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      max-width: 18ch;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--text-soft);
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--text-soft);
+      max-width: 54ch;
+      line-height: 1.65;
+      margin-bottom: 40px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .btn-primary:hover { background: var(--blue-dim); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-soft);
+      border: 1px solid var(--border-2);
+    }
+
+    .btn-ghost:hover { color: var(--text); border-color: var(--text-soft); }
+
+    /* === SECTION HEADERS === */
+    .section {
+      padding: 72px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--text-soft);
+      max-width: 60ch;
+      line-height: 1.65;
+      margin-bottom: 48px;
+    }
+
+    /* === FAILURE MODE CARDS === */
+    .fm-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .fm-card {
+      background: var(--bg-card);
+      padding: 24px 26px;
+      transition: background 0.15s;
+    }
+
+    .fm-card:hover { background: var(--bg-card-2); }
+
+    .fm-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--amber);
+      margin-bottom: 10px;
+    }
+
+    .fm-name {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.15rem;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .fm-desc {
+      font-size: 0.875rem;
+      color: var(--text-soft);
+      line-height: 1.6;
+    }
+
+    .fm-tell {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+      font-style: italic;
+    }
+
+    /* === EVIDENCE BANDS === */
+    .bands-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    .bands-table thead tr {
+      border-bottom: 1px solid var(--border-2);
+    }
+
+    .bands-table th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 0 16px 12px;
+      text-align: left;
+    }
+
+    .bands-table th:first-child { padding-left: 0; }
+
+    .bands-table td {
+      padding: 16px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .bands-table td:first-child { padding-left: 0; }
+    .bands-table tr:last-child td { border-bottom: none; }
+
+    .band-pill {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .band-est  { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .band-prob { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+    .band-con  { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    .band-dbt  { background: rgba(239, 68, 68, 0.12);  color: #f87171; }
+    .band-ref  { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+
+    .band-range {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-soft);
+    }
+
+    .band-desc {
+      font-size: 0.875rem;
+      color: var(--text-soft);
+    }
+
+    /* === MIRROR RULE === */
+    .mirror-rule {
+      background: var(--bg-card);
+      border: 1px solid var(--border-2);
+      border-left: 3px solid var(--blue);
+      border-radius: 0 8px 8px 0;
+      padding: 28px 32px;
+      margin-top: 40px;
+    }
+
+    .mirror-rule .mr-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 12px;
+    }
+
+    .mirror-rule p {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.2rem;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    .mirror-rule p + p {
+      margin-top: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+    }
+
+    /* === PROMPT TOOL === */
+    .tool-section {
+      padding: 72px 0;
+    }
+
+    .prompt-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-2);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .prompt-box .pb-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card-2);
+    }
+
+    .pb-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text-soft);
+    }
+
+    .copy-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 6px 14px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .copy-btn:hover { background: var(--blue-dim); }
+    .copy-btn.copied { background: var(--green); }
+
+    .prompt-text {
+      padding: 24px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      color: var(--text-soft);
+      line-height: 1.75;
+      white-space: pre-wrap;
+      max-height: 380px;
+      overflow-y: auto;
+      user-select: all;
+    }
+
+    .prompt-text::-webkit-scrollbar { width: 6px; }
+    .prompt-text::-webkit-scrollbar-track { background: transparent; }
+    .prompt-text::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 3px; }
+
+    .prompt-instructions {
+      padding: 16px 24px;
+      background: var(--bg-card-2);
+      border-top: 1px solid var(--border);
+      font-size: 0.82rem;
+      color: var(--text-dim);
+    }
+
+    /* === SOURCE CATEGORIES === */
+    .source-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .source-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+    }
+
+    .source-tier {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .tier-primary { color: var(--green); }
+    .tier-reviewed { color: var(--blue); }
+    .tier-secondary { color: var(--amber); }
+    .tier-unverified { color: var(--red); }
+
+    .source-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .source-desc {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    /* === FOOTER === */
+    footer {
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-note {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      max-width: 60ch;
+      line-height: 1.6;
+    }
+
+    .footer-note a {
+      color: var(--text-soft);
+      text-decoration: none;
+    }
+
+    .footer-note a:hover { color: var(--text); }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 680px) {
+      .hero { padding: 56px 0 48px; }
+      .hero h1 { font-size: 2.2rem; }
+      .fm-grid { grid-template-columns: 1fr; }
+      .source-grid { grid-template-columns: 1fr; }
+      nav .nav-links { display: none; }
+      .bands-table { font-size: 0.82rem; }
+      .footer-inner { flex-direction: column; }
+      .section { padding: 56px 0; }
+      .mirror-rule { padding: 20px 22px; }
+      .mirror-rule p { font-size: 1.05rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
+    }
+
+    /* === UTILITY === */
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="wrap">
+    <div class="inner">
+      <a href="#" class="wordmark">Ground<span>Truth</span></a>
+      <ul class="nav-links">
+        <li><a href="#failure-modes">Failure Modes</a></li>
+        <li><a href="#evidence-rating">Evidence Rating</a></li>
+        <li><a href="#mirror-rule">Mirror Rule</a></li>
+        <li><a href="#ai-tool">AI Tool</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <p class="hero-eyebrow">An evidentiary framework</p>
+    <h1>Know when you are being <em>misled.</em></h1>
+    <p class="hero-sub">Propaganda does not announce itself. It works by manufacturing the appearance of evidence - repeating claims until they feel established, citing sources that trace back to one interested party, applying standards selectively depending on whose case they help. This framework names the techniques. Once you can name them, you can see them.</p>
+    <div class="hero-actions">
+      <a href="#ai-tool" class="btn btn-primary">Use the AI prompt tool</a>
+      <a href="#failure-modes" class="btn btn-ghost">See the ten failure modes</a>
+    </div>
+  </div>
+</header>
+
+<!-- FAILURE MODES -->
+<section class="section" id="failure-modes">
+  <div class="wrap">
+    <p class="section-label">Section 01</p>
+    <h2 class="section-title">Ten named failure modes</h2>
+    <p class="section-sub">These are the specific techniques by which evidence is fabricated, inflated, or selectively applied. Each has a name so that when you see it, you can say exactly what is happening - and why it matters.</p>
+
+    <div class="fm-grid">
+
+      <div class="fm-card">
+        <p class="fm-code">FM-01</p>
+        <h3 class="fm-name">Citation laundering</h3>
+        <p class="fm-desc">A claim passes through multiple outlets, each citing the previous one, with no source in the chain ever citing primary evidence. Repetition creates the appearance of broad support that does not exist.</p>
+        <p class="fm-tell">How to spot it: trace every source to its origin. If the chain circles back or dead-ends at another secondary source, the claim has no anchor.</p>
+      </div>
+
+      <div class="fm-card">
+        <p class="fm-code">FM-02</p>
+        <h3 class="fm-name">Single-origin amplification</h3>
+        <p class="fm-desc">Multiple independent-seeming sources all trace back to the same single origin - one report, one dataset, one official statement. The sources are real; the independence is not.</p>
+        <p class="fm-tell">How to spot it: ten sources citing the same underlying report are one piece of evidence, not ten.</p>
+      </div>
+
+      <div class="fm-card">
+        <p class="fm-code">FM-03</p>
+        <h3 class="fm-name">Interested-party assertion</h3>
+        <p class="fm-desc">A claim is sourced exclusively to a party with a direct stake in the finding being true - a government, a military, an advocacy organisation. The claim may be true, but it is not yet evidenced.</p>
+        <p class="fm-tell">How to spot it: ask who benefits from this being believed. If the only sources are parties who benefit, the claim needs independent verification.</p>
+      </div>
+
+      <div class="fm-card">
+        <p class="fm-code">FM-04</p>
+        <h3 class="fm-name">Mandate creep</h3>
+        <p class="fm-desc">A body whose mandate covers X is cited as evidence for Y. A court issues provisional measures - this tells you a case was accepted for hearing, not that the claim is true. A committee passes a resolution - this tells you about voting composition, not about facts.</p>
+        <p class="fm-tell">How to spot it: check what the cited body was actually asked to decide, and whether the claim matches that specific decision.</p>
+      </div>
+
+      <div class="fm-card">
+        <p class="fm-code">FM-05</p>
+        <h3 class="fm-name">Retracted or superseded source</h3>
+        <p class="fm-desc">A claim rests on a source that has since been corrected, retracted, or superseded by better evidence - but the original continues to circulate.</p>
+        <p class="fm-tell">How to spot it: check whether the source is the most recent available, and whether subsequent research has revised the finding.</p>
+      </div>
+
+      <div class="fm-card">
+        <p class="fm-code">FM-06</p>
+        <h3 class="fm-name">Decontextualised statistic</h3>
+        <p class="fm-desc">A real number cited without the context that gives it meaning - without demographic breakdown, without comparison to comparable cases, without methodological notes. The number may be accurate; the claim built on it may not be.</p>
+        <p class="fm-tell">How to spot it: ask what the full dataset shows, not just the headline figure.</p>
+      </div>
+
+      <div class="fm-card">
+        <p class="fm-code">FM-07</p>
+        <h3 class="fm-name">False precision</h3>
+        <p class="fm-desc">A claim stated with numerical specificity that implies rigorous measurement, when the underlying data is estimated, modelled, or given as a range. A single figure cited from a source that itself provides a wide uncertainty interval.</p>
+        <p class="fm-tell">How to spot it: check whether the source gives a range or margin, and whether the claim has silently dropped it.</p>
+      </div>
+
+      <div class="fm-card">
+        <p class="fm-code">FM-08</p>
+        <h3 class="fm-name">Motive attribution without evidence</h3>
+        <p class="fm-desc">A claim about what a party intended, based only on the outcome rather than on documented orders, statements, or systematic patterns of behaviour. Intent is a separate factual question from outcome and requires its own direct evidence.</p>
+        <p class="fm-tell">How to spot it: ask what evidence of intent exists - documents, orders, explicit statements - independent of the outcome itself.</p>
+      </div>
+
+      <div class="fm-card">
+        <p class="fm-code">FM-09</p>
+        <h3 class="fm-name">Isolated quote</h3>
+        <p class="fm-desc">A statement by one official, soldier, or commentator cited as representing the policy or intent of an entire government, organisation, or people.</p>
+        <p class="fm-tell">How to spot it: ask whether the quote reflects documented official policy, or whether it is an individual statement by someone without authority to set policy.</p>
+      </div>
+
+      <div class="fm-card">
+        <p class="fm-code">FM-10</p>
+        <h3 class="fm-name">Asymmetric application</h3>
+        <p class="fm-desc">The evidentiary standard applied to one party in a dispute is not applied to the other. Sources accepted for one side are rejected for the other using different criteria.</p>
+        <p class="fm-tell">How to spot it: ask whether you would accept this source type if it supported the opposite conclusion.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EVIDENCE RATING -->
+<section class="section" id="evidence-rating">
+  <div class="wrap">
+    <p class="section-label">Section 02</p>
+    <h2 class="section-title">Five-band evidence rating</h2>
+    <p class="section-sub">Rather than reaching for words like "probably" or "seems to be" - words that different readers interpret at wildly different confidence levels - this framework maps claims to a numbered scale. The thresholds are borrowed from two mature traditions: United States intelligence doctrine on estimative probability, and the legal system's graded standards of proof.</p>
+
+    <table class="bands-table">
+      <thead>
+        <tr>
+          <th>Rating</th>
+          <th>Confidence</th>
+          <th>What it means</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="band-pill band-est">Established</span></td>
+          <td class="band-range">95 - 99%+</td>
+          <td class="band-desc">Multiple independent lines of primary evidence converge. The current state of the field. Equivalent to "beyond reasonable doubt."</td>
+        </tr>
+        <tr>
+          <td><span class="band-pill band-prob">Probable</span></td>
+          <td class="band-range">70 - 95%</td>
+          <td class="band-desc">More likely true than not. Credible sourcing with some gaps or minor contrary evidence. Equivalent to "clear and convincing."</td>
+        </tr>
+        <tr>
+          <td><span class="band-pill band-con">Contested</span></td>
+          <td class="band-range">30 - 70%</td>
+          <td class="band-desc">Credible evidence and argument exist on both sides. Genuinely uncertain. "Contested" does not mean both sides are equally supported - look at which side has the stronger primary sourcing.</td>
+        </tr>
+        <tr>
+          <td><span class="band-pill band-dbt">Doubtful</span></td>
+          <td class="band-range">5 - 30%</td>
+          <td class="band-desc">The weight of evidence points against it. Primary sources do not support it. Relies on interested-secondary sources or outliers. Fails the civil standard.</td>
+        </tr>
+        <tr>
+          <td><span class="band-pill band-ref">Refuted</span></td>
+          <td class="band-range">&lt;5%</td>
+          <td class="band-desc">Directly contradicted by primary sources or forensic evidence. The claim is positively disproved, not merely unproven.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="mirror-rule" id="mirror-rule" style="margin-top:56px;">
+      <p class="mr-label">The Mirror Rule</p>
+      <p>Every evidentiary standard applied to one party in a dispute must be applied identically to all other parties.</p>
+      <p>If you would dismiss a source as government-affiliated, apply the same scrutiny to every government with a stake in the question. If you would accept an NGO report on one side, apply the same acceptance threshold to NGO reports on the other. The test: would you apply this standard if it supported the opposite conclusion? If the answer is no, adjust until it is yes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SOURCE CATEGORIES -->
+<section class="section" id="source-categories">
+  <div class="wrap">
+    <p class="section-label">Section 03</p>
+    <h2 class="section-title">Source reliability categories</h2>
+    <p class="section-sub">Not all sources are equal. The category tells you how much independent verification is needed before treating a claim as established.</p>
+
+    <div class="source-grid">
+      <div class="source-card">
+        <p class="source-tier tier-primary">Primary</p>
+        <p class="source-name">Court judgments, legal texts, official records</p>
+        <p class="source-desc">Documents created at the time by parties with direct knowledge. The strongest category - but read what the document actually says, not what someone says it says (see: Mandate Creep).</p>
+      </div>
+
+      <div class="source-card">
+        <p class="source-tier tier-primary">Primary</p>
+        <p class="source-name">Forensic and physical evidence</p>
+        <p class="source-desc">Archaeological findings, satellite imagery, scientific measurements, material records. Cannot be revised by a party with an interest in the outcome.</p>
+      </div>
+
+      <div class="source-card">
+        <p class="source-tier tier-reviewed">Peer-reviewed</p>
+        <p class="source-name">Peer-reviewed academic</p>
+        <p class="source-desc">Published in a journal with independent expert review. Check whether findings have been replicated and whether the journal is in the field's mainstream.</p>
+      </div>
+
+      <div class="source-card">
+        <p class="source-tier tier-reviewed">Credible</p>
+        <p class="source-name">Major independent newswire</p>
+        <p class="source-desc">AP, Reuters, BBC, AFP reporting (not opinion). Aim for factual coverage. These are pointers to primary sources, not primary sources themselves.</p>
+      </div>
+
+      <div class="source-card">
+        <p class="source-tier tier-secondary">Interested-secondary</p>
+        <p class="source-name">NGOs and advocacy organisations</p>
+        <p class="source-desc">Bodies with stated positions or structural interests. Label the interest, not just the category. Verify their claims against primary sources. Apply this standard to all advocacy groups equally, regardless of which conclusion they support.</p>
+      </div>
+
+      <div class="source-card">
+        <p class="source-tier tier-secondary">Interested-secondary</p>
+        <p class="source-name">Governments and state agencies</p>
+        <p class="source-desc">Any government with a stake in the finding is an interested party. Apply this equally to all governments. A government is authoritative on its own stated positions - not on contested facts.</p>
+      </div>
+
+      <div class="source-card">
+        <p class="source-tier tier-secondary">Interested-secondary</p>
+        <p class="source-name">Think tanks and policy institutes</p>
+        <p class="source-desc">Policy institutes with known political or ideological orientations. Their analysis may be rigorous; their framing and topic selection is shaped by their position. Name the orientation.</p>
+      </div>
+
+      <div class="source-card">
+        <p class="source-tier tier-unverified">Unverified</p>
+        <p class="source-name">Social media, anonymous, unattributed</p>
+        <p class="source-desc">Viral posts, unattributed claims, unknown origin. These are leads to investigate, not evidence. Never cite as authority. Treat with proportional scepticism regardless of which side they support.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI PROMPT TOOL -->
+<section class="tool-section" id="ai-tool">
+  <div class="wrap">
+    <p class="section-label">Section 04 - The Tool</p>
+    <h2 class="section-title">Check any claim now</h2>
+    <p class="section-sub">Copy this prompt and paste it into any AI assistant - Claude, ChatGPT, Gemini, or any other. Then add the source or claim you want to check at the bottom. The prompt applies everything on this page: source classification, the mirror rule, the ten failure modes, and a five-band evidence rating. Use it on claims that support your view as readily as claims that challenge it.</p>
+
+    <div class="prompt-box">
+      <div class="pb-header">
+        <span class="pb-title">GROUNDTRUTH CLAIM VALIDATOR - UNIVERSAL PROMPT</span>
+        <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">Copy prompt</button>
+      </div>
+      <div class="prompt-text" id="promptText">You are an evidence analyst applying a consistent, symmetrical standard to sources and claims. Your job is not to reach a preferred conclusion - it is to apply the same evidentiary rules regardless of which side of a debate the source or claim supports.
+
+I will give you either a source (website, article, organisation, document, or person making a claim), or a specific claim I want you to assess, with or without a source attached. Assess it using the framework below, then give me a structured output.
+
+STEP 1 - CLASSIFY THE SOURCE
+
+Use one of these categories:
+
+- Primary: court judgment, legal text, treaty, or official record
+- Primary: forensic or physical evidence (satellite imagery, archaeological finding, scientific measurement)
+- Primary: contemporaneous document (created at the time by parties present)
+- Peer-reviewed academic: published with independent expert review
+- Academic / scholarly: credentialled expert, not peer-reviewed
+- Major independent newswire: AP, Reuters, BBC, AFP factual reporting (not opinion)
+- Independent monitoring body: non-partisan observer with no stake in the finding
+- Interested-secondary (NGO): advocacy organisation with a stated position
+- Interested-secondary (think tank): policy institute with a known orientation
+- Interested-secondary (government): any government with a stake in the finding
+- Interested-secondary (advocacy media): publication with a known editorial line
+- Unverified / anonymous: social media, unattributed, unknown origin
+
+STEP 2 - APPLY THE MIRROR RULE
+
+Ask: would I apply the same level of scrutiny to an equivalent source on the opposite side of this debate? State your answer explicitly. If the answer is no, adjust until it is yes.
+
+STEP 3 - CHECK FOR NAMED FAILURE MODES
+
+Before rating the claim, check it against this list. If one applies, name it and explain why it matters.
+
+FM-01 Citation laundering: a claim passes through multiple outlets with no source ever citing primary evidence. Repetition creates the appearance of support that does not exist.
+
+FM-02 Single-origin amplification: multiple independent-seeming sources all trace back to the same single origin. The sources are real; the independence is not.
+
+FM-03 Interested-party assertion: a claim sourced exclusively to a party with a direct stake in the finding. The claim may be true but is not yet evidenced.
+
+FM-04 Mandate creep: a body cited for conclusions outside its actual mandate. A case being heard is not a verdict. A resolution is evidence of a vote, not evidence of the underlying facts.
+
+FM-05 Retracted or superseded source: the source has since been corrected or superseded but continues to circulate.
+
+FM-06 Decontextualised statistic: a real number cited without the context that gives it meaning.
+
+FM-07 False precision: a claim stated with numerical specificity that the underlying data does not support.
+
+FM-08 Motive attribution without evidence: intent claimed from outcome alone, without documented orders, statements, or systematic patterns.
+
+FM-09 Isolated quote: one individual's statement cited as representing the policy of an entire organisation or government.
+
+FM-10 Asymmetric application: different evidentiary standards applied to different parties in the same debate.
+
+STEP 4 - ASSESS THE CLAIM
+
+- Does the source cited directly support the specific claim, or is there a gap?
+- What would a primary source for this claim actually look like?
+- Is contradicting evidence from equivalent or stronger sources being ignored?
+- Is the claim consistent with the current state of expert knowledge, or does it rely on outliers?
+
+STEP 5 - RATE THE CLAIM
+
+Use this five-band scale:
+
+Established (95-99%+): Multiple independent lines of primary evidence. The current state of the field.
+Probable (70-95%): More likely true than not. Credible sourcing with minor gaps.
+Contested (30-70%): Credible evidence exists on both sides. Genuinely uncertain. Does not mean equally supported.
+Doubtful (5-30%): Weight of evidence points against it. Relies on interested-secondary sources.
+Refuted (<5%): Directly contradicted by primary sources or forensic evidence.
+
+OUTPUT FORMAT
+
+Source type: [category from Step 1]
+Known interests / orientation: [what stake this source has - applied equally to all sides]
+Mirror rule: [yes / no - and one line on whether the same standard would apply to the other side]
+Failure mode identified: [name from the list above, or "none identified" - with plain-English explanation of what went wrong]
+Claim assessment: [does the source support the specific claim? Is there a gap? Is contrary evidence being ignored?]
+Evidence rating: [Established / Probable / Contested / Doubtful / Refuted]
+What would actually establish this: [what primary source or evidence type would settle the question]
+Plain-English verdict: [two to three sentences a non-expert can use]
+
+IMPORTANT LIMITS
+
+This checks source reliability and whether a claim is well-supported. It cannot guarantee every factual detail is accurate - AI systems make errors on specific facts. "Interested-secondary" does not mean wrong - it means verify against primary sources before treating as settled. "Contested" does not mean both sides are equally supported - look at which side has the stronger primary evidence.
+
+---
+
+Now paste the source or claim you want checked:</div>
+      <div class="prompt-instructions">Paste into Claude, ChatGPT, Gemini, or any other AI assistant. Add your source or claim at the bottom. Works on any topic.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div>
+        <a href="#" class="wordmark" style="display:inline-block;margin-bottom:10px;">Ground<span>Truth</span></a>
+        <p class="footer-note">An open framework for evaluating claims. No affiliation with any political party, government, advocacy organisation, or news outlet. The framework applies the same standard to all sources regardless of which conclusion they support.</p>
+      </div>
+      <p class="footer-note" style="text-align:right;max-width:28ch;">Every claim on this site is held to the standard it describes. Check us against our own framework.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function copyPrompt() {
+    const text = document.getElementById('promptText').innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy prompt';
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(() => {
+      // Fallback for older browsers
+      const el = document.getElementById('promptText');
+      const range = document.createRange();
+      range.selectNode(el);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand('copy');
+      window.getSelection().removeAllRanges();
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy prompt';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>
