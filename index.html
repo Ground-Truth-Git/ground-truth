@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GroundTruth - A framework for evaluating claims</title>
-  <meta name="description" content="Ten named failure modes. A five-band evidence rating. One AI prompt tool. Everything you need to tell the difference between a fact and a talking point.">
+  <title>GroundTruth - How to check if a claim is true</title>
+  <meta name="description" content="A simple, repeatable way to tell a well-supported claim from a manufactured one. Five questions, ten warning signs, and a free AI tool that does the check for you.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <style>
-    /* === TOKENS === */
     :root {
       --bg:        #0A0F1E;
       --bg-card:   #111827;
@@ -17,8 +16,8 @@
       --border:    #1f2d45;
       --border-2:  #2a3d58;
       --text:      #E8EFFE;
-      --text-soft: #8899BB;
-      --text-dim:  #4a5978;
+      --text-soft: #9DB0D4;
+      --text-dim:  #6075a0;
       --blue:      #3B82F6;
       --blue-dim:  #1d4ed8;
       --green:     #10B981;
@@ -26,1435 +25,575 @@
       --red:       #EF4444;
       --purple:    #8B5CF6;
     }
-
-    /* === RESET & BASE === */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
-
     body {
-      background: var(--bg);
-      color: var(--text);
+      background: var(--bg); color: var(--text);
       font-family: 'Inter', system-ui, sans-serif;
-      font-size: 16px;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
+      font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased;
     }
-
-    /* === LAYOUT === */
-    .wrap {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    /* === NAV === */
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
     nav {
-      border-bottom: 1px solid var(--border);
-      padding: 18px 0;
-      position: sticky;
-      top: 0;
-      background: rgba(10, 15, 30, 0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      z-index: 100;
+      border-bottom: 1px solid var(--border); padding: 18px 0;
+      position: sticky; top: 0; background: rgba(10, 15, 30, 0.92);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 100;
     }
-
-    nav .inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
+    nav .inner { display: flex; align-items: center; justify-content: space-between; }
     .wordmark {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      font-size: 1rem;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      text-decoration: none;
+      font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1rem;
+      letter-spacing: -0.02em; color: var(--text); text-decoration: none;
     }
-
-    .wordmark span {
-      color: var(--blue);
-    }
-
-    nav .nav-links {
-      display: flex;
-      gap: 28px;
-      list-style: none;
-    }
-
+    .wordmark span { color: var(--blue); }
+    nav .nav-links { display: flex; gap: 26px; list-style: none; }
     nav .nav-links a {
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-soft);
-      text-decoration: none;
-      transition: color 0.15s;
+      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.04em;
+      text-transform: uppercase; color: var(--text-soft); text-decoration: none; transition: color 0.15s;
     }
-
     nav .nav-links a:hover { color: var(--text); }
-
-    /* === HERO === */
-    .hero {
-      padding: 80px 0 72px;
-      border-bottom: 1px solid var(--border);
-    }
-
+    .hero { padding: 76px 0 64px; border-bottom: 1px solid var(--border); }
     .hero-eyebrow {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--blue);
-      margin-bottom: 20px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--blue); margin-bottom: 20px;
     }
-
     .hero h1 {
-      font-family: 'DM Serif Display', Georgia, serif;
-      font-size: clamp(2.4rem, 6vw, 4rem);
-      line-height: 1.08;
-      letter-spacing: -0.02em;
-      max-width: 18ch;
-      margin-bottom: 28px;
+      font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(2.4rem, 6vw, 3.8rem);
+      line-height: 1.1; letter-spacing: -0.02em; max-width: 20ch; margin-bottom: 24px;
     }
-
-    .hero h1 em {
-      font-style: italic;
-      color: var(--text-soft);
-    }
-
-    .hero-sub {
-      font-size: 1.1rem;
-      color: var(--text-soft);
-      max-width: 54ch;
-      line-height: 1.65;
-      margin-bottom: 40px;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
+    .hero h1 em { font-style: italic; color: var(--text-soft); }
+    .hero-sub { font-size: 1.15rem; color: var(--text-soft); max-width: 56ch; line-height: 1.6; margin-bottom: 36px; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.875rem;
-      font-weight: 600;
-      padding: 12px 24px;
-      border-radius: 6px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: all 0.15s;
-      letter-spacing: 0.01em;
+      display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600;
+      padding: 13px 26px; border-radius: 6px; text-decoration: none; border: none; cursor: pointer;
+      transition: all 0.15s; letter-spacing: 0.01em;
     }
-
-    .btn-primary {
-      background: var(--blue);
-      color: #fff;
-    }
-
+    .btn-primary { background: var(--blue); color: #fff; }
     .btn-primary:hover { background: var(--blue-dim); }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--text-soft);
-      border: 1px solid var(--border-2);
-    }
-
+    .btn-ghost { background: transparent; color: var(--text-soft); border: 1px solid var(--border-2); }
     .btn-ghost:hover { color: var(--text); border-color: var(--text-soft); }
-
-    /* === SECTION HEADERS === */
-    .section {
-      padding: 72px 0;
-      border-bottom: 1px solid var(--border);
+    .stakes { background: var(--bg-card); border-bottom: 1px solid var(--border); padding: 40px 0; }
+    .stakes p {
+      font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(1.2rem, 2.6vw, 1.6rem);
+      line-height: 1.5; color: var(--text); max-width: 60ch;
     }
-
+    .stakes p em { color: var(--blue); font-style: italic; }
+    .section { padding: 68px 0; border-bottom: 1px solid var(--border); }
     .section-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      margin-bottom: 10px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 10px;
     }
-
     .section-title {
-      font-family: 'DM Serif Display', Georgia, serif;
-      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-      line-height: 1.15;
-      letter-spacing: -0.01em;
-      margin-bottom: 12px;
+      font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+      line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 14px;
     }
-
-    .section-sub {
-      font-size: 1rem;
-      color: var(--text-soft);
-      max-width: 60ch;
-      line-height: 1.65;
-      margin-bottom: 48px;
+    .section-sub { font-size: 1.05rem; color: var(--text-soft); max-width: 62ch; line-height: 1.6; margin-bottom: 44px; }
+    .five-q { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
+    .fq-card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+      padding: 26px 28px; display: grid; grid-template-columns: 56px 1fr; gap: 22px;
+      align-items: start; transition: border-color 0.15s, background 0.15s;
     }
-
-    /* === FAILURE MODE CARDS === */
-    .fm-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
+    .fq-card:hover { border-color: var(--border-2); background: var(--bg-card-2); }
+    .fq-number { font-family: 'DM Serif Display', Georgia, serif; font-size: 2.4rem; line-height: 1; color: var(--blue); text-align: center; }
+    .fq-question { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.35rem; line-height: 1.3; margin-bottom: 8px; color: var(--text); }
+    .fq-plain { font-size: 0.95rem; color: var(--text-soft); line-height: 1.6; }
+    .fq-plain strong { color: var(--text); font-weight: 600; }
+    .signs-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
     }
-
-    .fm-card {
-      background: var(--bg-card);
-      padding: 24px 26px;
-      transition: background 0.15s;
+    .sign-card { background: var(--bg-card); padding: 24px 26px; transition: background 0.15s; }
+    .sign-card:hover { background: var(--bg-card-2); }
+    .sign-code { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; color: var(--amber); margin-bottom: 10px; }
+    .sign-name { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.15rem; line-height: 1.25; margin-bottom: 8px; }
+    .sign-desc { font-size: 0.9rem; color: var(--text-soft); line-height: 1.6; }
+    .sign-tell { font-size: 0.82rem; color: var(--text-soft); margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .sign-tell strong { color: var(--amber); font-weight: 600; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .ladder { margin-top: 8px; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .rung { display: grid; grid-template-columns: 130px 1fr; border-bottom: 1px solid var(--border); background: var(--bg-card); transition: background 0.15s; }
+    .rung:last-child { border-bottom: none; }
+    .rung:hover { background: var(--bg-card-2); }
+    .rung-strength { padding: 18px 16px; border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+    .rung-tier { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .rung-bar { height: 4px; border-radius: 2px; }
+    .s-top { color: var(--green); } .s-top .rung-bar { background: var(--green); width: 100%; }
+    .s-high { color: #6ee7b7; } .s-high .rung-bar { background: #6ee7b7; width: 85%; }
+    .s-mid { color: var(--blue); } .s-mid .rung-bar { background: var(--blue); width: 68%; }
+    .s-inf { color: #93c5fd; } .s-inf .rung-bar { background: #93c5fd; width: 52%; }
+    .s-test { color: var(--amber); } .s-test .rung-bar { background: var(--amber); width: 40%; }
+    .s-sec { color: #fb923c; } .s-sec .rung-bar { background: #fb923c; width: 26%; }
+    .s-low { color: var(--red); } .s-low .rung-bar { background: var(--red); width: 14%; }
+    .rung-body { padding: 16px 22px; }
+    .rung-name { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+    .rung-desc { font-size: 0.85rem; color: var(--text-soft); line-height: 1.55; }
+    .callout {
+      background: var(--bg-card); border: 1px solid var(--border-2); border-left: 3px solid var(--amber);
+      border-radius: 0 8px 8px 0; padding: 22px 26px; margin-top: 28px;
+      font-size: 0.95rem; color: var(--text-soft); line-height: 1.65;
     }
-
-    .fm-card:hover { background: var(--bg-card-2); }
-
-    .fm-code {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: var(--amber);
-      margin-bottom: 10px;
+    .callout strong { color: var(--text); font-weight: 600; }
+    .callout.blue { border-left-color: var(--blue); }
+    .callout.red { border-left-color: var(--red); }
+    .conf-intro { margin-bottom: 28px; }
+    .bands { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+    .band-row {
+      display: grid; grid-template-columns: 150px 1fr; gap: 20px; align-items: center;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 18px 22px;
     }
-
-    .fm-name {
-      font-family: 'DM Serif Display', Georgia, serif;
-      font-size: 1.15rem;
-      line-height: 1.25;
-      margin-bottom: 8px;
-    }
-
-    .fm-desc {
-      font-size: 0.875rem;
-      color: var(--text-soft);
-      line-height: 1.6;
-    }
-
-    .fm-tell {
-      font-size: 0.78rem;
-      color: var(--text-soft);
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid var(--border);
-      font-style: italic;
-    }
-
-    /* === EVIDENCE BANDS === */
-    .bands-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 8px;
-    }
-
-    .bands-table thead tr {
-      border-bottom: 1px solid var(--border-2);
-    }
-
-    .bands-table th {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      padding: 0 16px 12px;
-      text-align: left;
-    }
-
-    .bands-table th:first-child { padding-left: 0; }
-
-    .bands-table td {
-      padding: 16px 16px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-    }
-
-    .bands-table td:first-child { padding-left: 0; }
-    .bands-table tr:last-child td { border-bottom: none; }
-
     .band-pill {
-      display: inline-block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      padding: 3px 10px;
-      border-radius: 20px;
-      white-space: nowrap;
+      display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.74rem;
+      font-weight: 700; letter-spacing: 0.05em; padding: 5px 12px; border-radius: 20px; white-space: nowrap; text-align: center;
     }
-
-    .band-est  { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .band-est { background: rgba(16, 185, 129, 0.15); color: #34d399; }
     .band-prob { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
-    .band-con  { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
-    .band-dbt  { background: rgba(239, 68, 68, 0.12);  color: #f87171; }
-    .band-ref  { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
-
-    .band-range {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      color: var(--text-soft);
+    .band-con { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    .band-dbt { background: rgba(239, 68, 68, 0.12); color: #f87171; }
+    .band-ref { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+    .band-text { font-size: 0.92rem; color: var(--text-soft); line-height: 1.55; }
+    .band-text strong { color: var(--text); }
+    .example-box { background: var(--bg-card); border: 1px solid var(--border-2); border-radius: 12px; overflow: hidden; margin-top: 8px; }
+    .example-claim {
+      font-family: 'DM Serif Display', Georgia, serif; font-size: 1.2rem; line-height: 1.45; color: var(--text);
+      padding: 26px 28px; background: var(--bg-card-2); border-bottom: 1px solid var(--border);
     }
-
-    .band-desc {
-      font-size: 0.875rem;
-      color: var(--text-soft);
+    .example-claim .q { color: var(--text-dim); font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 12px; }
+    .example-body { padding: 8px 28px 24px; }
+    .example-step { padding: 20px 0; border-bottom: 1px solid var(--border); }
+    .example-step:last-of-type { border-bottom: none; }
+    .example-q { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+    .example-q .step-n { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--blue); background: rgba(59,130,246,0.12); padding: 3px 8px; border-radius: 4px; font-weight: 700; }
+    .example-a { font-size: 0.92rem; color: var(--text-soft); line-height: 1.6; }
+    .example-a strong { color: var(--text); font-weight: 600; }
+    .example-verdict {
+      margin-top: 8px; padding: 22px 28px; background: rgba(239, 68, 68, 0.08);
+      border-top: 1px solid rgba(239, 68, 68, 0.2); display: flex; align-items: flex-start; gap: 18px;
     }
-
-    /* === MIRROR RULE === */
-    .mirror-rule {
-      background: var(--bg-card);
-      border: 1px solid var(--border-2);
-      border-left: 3px solid var(--blue);
-      border-radius: 0 8px 8px 0;
-      padding: 28px 32px;
-      margin-top: 40px;
+    .example-verdict .band-pill { flex-shrink: 0; margin-top: 2px; }
+    .example-verdict-text { font-size: 0.95rem; color: var(--text-soft); line-height: 1.55; }
+    .example-verdict-text strong { color: var(--text); }
+    .mirror {
+      background: var(--bg-card); border: 1px solid var(--border-2); border-left: 3px solid var(--blue);
+      border-radius: 0 10px 10px 0; padding: 30px 34px; margin-top: 8px;
     }
-
-    .mirror-rule .mr-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--blue);
-      margin-bottom: 12px;
-    }
-
-    .mirror-rule p {
-      font-family: 'DM Serif Display', Georgia, serif;
-      font-size: 1.2rem;
-      line-height: 1.5;
-      color: var(--text);
-    }
-
-    .mirror-rule p + p {
-      margin-top: 12px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.9rem;
-      color: var(--text-soft);
-    }
-
-    /* === PROMPT TOOL === */
-    .tool-section {
-      padding: 72px 0;
-    }
-
-    .prompt-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border-2);
-      border-radius: 10px;
-      overflow: hidden;
-      margin-top: 8px;
-    }
-
-    .prompt-box .pb-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 24px;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg-card-2);
-    }
-
-    .pb-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: var(--text-soft);
-    }
-
-    .copy-btn {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      padding: 6px 14px;
-      background: var(--blue);
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
+    .mirror-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue); margin-bottom: 14px; }
+    .mirror-big { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.35rem; line-height: 1.45; color: var(--text); margin-bottom: 14px; }
+    .mirror-small { font-size: 0.95rem; color: var(--text-soft); line-height: 1.65; }
+    .tool-section { padding: 68px 0; }
+    .prompt-box { background: var(--bg-card); border: 1px solid var(--border-2); border-radius: 12px; overflow: hidden; margin-top: 8px; }
+    .pb-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--border); background: var(--bg-card-2); }
+    .pb-title { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.08em; color: var(--text-soft); }
+    .copy-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; padding: 8px 16px; background: var(--blue); color: #fff; border: none; border-radius: 5px; cursor: pointer; transition: all 0.15s; }
     .copy-btn:hover { background: var(--blue-dim); }
     .copy-btn.copied { background: var(--green); }
-
     .prompt-text {
-      padding: 24px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.875rem;
-      color: var(--text-soft);
-      line-height: 1.75;
-      white-space: pre-wrap;
-      max-height: 380px;
-      overflow-y: auto;
-      user-select: all;
+      padding: 24px; font-family: 'Inter', sans-serif; font-size: 0.875rem; color: var(--text-soft);
+      line-height: 1.75; white-space: pre-wrap; max-height: 360px; overflow-y: auto; user-select: all;
     }
-
     .prompt-text::-webkit-scrollbar { width: 6px; }
     .prompt-text::-webkit-scrollbar-track { background: transparent; }
     .prompt-text::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 3px; }
-
-    .prompt-instructions {
-      padding: 16px 24px;
-      background: var(--bg-card-2);
-      border-top: 1px solid var(--border);
-      font-size: 0.82rem;
-      color: var(--text-dim);
-    }
-
-    /* === WARRANT HIERARCHY === */
-    .warrant-list {
-      margin-top: 8px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .warrant-item {
-      display: grid;
-      grid-template-columns: 48px 1fr;
-      align-items: stretch;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg-card);
-      transition: background 0.15s;
-    }
-
-    .warrant-item:last-child { border-bottom: none; }
-    .warrant-item:hover { background: var(--bg-card-2); }
-
-    .warrant-num {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      font-size: 0.9rem;
-      border-right: 1px solid var(--border);
-      padding: 16px 0;
-    }
-
-    .w-strongest { color: var(--green); }
-    .w-strong    { color: #6ee7b7; }
-    .w-good      { color: var(--blue); }
-    .w-inferred  { color: #93c5fd; }
-    .w-testimony { color: var(--amber); }
-    .w-secondary { color: #fb923c; }
-    .w-assertion { color: var(--red); }
-
-    .warrant-body {
-      padding: 14px 20px;
-    }
-
-    .warrant-name {
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 3px;
-    }
-
-    .warrant-desc {
-      font-size: 0.8rem;
-      color: var(--text-soft);
-      line-height: 1.5;
-    }
-
-    /* === CLAIM TYPE TABLE === */
-    .claim-types {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 8px;
-    }
-
-    .claim-types th {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      padding: 0 16px 12px;
-      text-align: left;
-      border-bottom: 1px solid var(--border-2);
-    }
-
-    .claim-types th:first-child { padding-left: 0; }
-
-    .claim-types td {
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-      font-size: 0.875rem;
-    }
-
-    .claim-types td:first-child { padding-left: 0; font-weight: 600; }
-    .claim-types tr:last-child td { border-bottom: none; }
-
-    .claim-types td.ct-example { color: var(--text-soft); font-size: 0.82rem; }
-
-    .ceiling-pill {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 20px;
-      white-space: nowrap;
-    }
-
-    .ceil-est  { background: rgba(16, 185, 129, 0.15); color: #34d399; }
-    .ceil-prob { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
-    .ceil-none { background: rgba(239, 68, 68, 0.10); color: #f87171; font-size: 0.62rem; }
-
-    /* === FIVE QUESTIONS === */
-    .five-q {
-      margin-top: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .fq-item {
-      background: var(--bg-card);
-      padding: 18px 24px;
-      display: grid;
-      grid-template-columns: 32px 1fr;
-      gap: 16px;
-      align-items: start;
-      transition: background 0.15s;
-    }
-
-    .fq-item:hover { background: var(--bg-card-2); }
-
-    .fq-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      font-size: 1rem;
-      color: var(--blue);
-      padding-top: 2px;
-    }
-
-    .fq-q {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .fq-maps {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--text-dim);
-      letter-spacing: 0.05em;
-    }
-
-    /* === CALLOUT BOX === */
-    .callout-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border-2);
-      border-left: 3px solid var(--amber);
-      border-radius: 0 8px 8px 0;
-      padding: 20px 24px;
-      margin-top: 32px;
-      font-size: 0.875rem;
-      color: var(--text-soft);
-      line-height: 1.65;
-    }
-
-    .callout-box strong {
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    /* === INDEP DIMENSIONS === */
-    .indep-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
-      margin-top: 24px;
-    }
-
-    .indep-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px 12px;
-      text-align: center;
-    }
-
-    .indep-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: var(--blue);
-      margin-bottom: 6px;
-    }
-
-    .indep-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .indep-desc {
-      font-size: 0.72rem;
-      color: var(--text-soft);
-      line-height: 1.4;
-    }
-
-    @media (max-width: 680px) {
-      .indep-grid { grid-template-columns: repeat(3, 1fr); }
-      .claim-types { font-size: 0.8rem; }
-      .warrant-num { font-size: 0.8rem; }
-    }
-
     .copy-btn-bottom {
-      display: block;
-      width: 100%;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      padding: 14px 24px;
-      background: var(--blue);
-      color: #fff;
-      border: none;
-      border-top: 1px solid var(--border);
-      cursor: pointer;
-      transition: all 0.15s;
-      text-align: center;
+      display: block; width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+      font-weight: 700; letter-spacing: 0.06em; padding: 15px 24px; background: var(--blue); color: #fff;
+      border: none; border-top: 1px solid var(--border); cursor: pointer; transition: all 0.15s; text-align: center;
     }
-
     .copy-btn-bottom:hover { background: var(--blue-dim); }
     .copy-btn-bottom.copied { background: var(--green); }
-
-    /* === WORKED EXAMPLE === */
-    .example-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border-2);
-      border-radius: 10px;
-      overflow: hidden;
-      margin-top: 40px;
-    }
-
-    .example-header {
-      padding: 16px 24px;
-      background: var(--bg-card-2);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .example-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--amber);
-    }
-
-    .example-title {
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-
-    .example-body {
-      padding: 24px;
-    }
-
-    .example-claim {
-      font-family: 'DM Serif Display', Georgia, serif;
-      font-size: 1.1rem;
-      line-height: 1.45;
-      color: var(--text);
-      padding: 16px 20px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      margin-bottom: 24px;
-    }
-
-    .example-steps {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .example-step {
-      display: grid;
-      grid-template-columns: 120px 1fr;
-      gap: 16px;
-      align-items: start;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .example-step:last-child { border-bottom: none; padding-bottom: 0; }
-
-    .example-step-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      padding-top: 2px;
-    }
-
-    .example-step-content {
-      font-size: 0.875rem;
-      color: var(--text-soft);
-      line-height: 1.6;
-    }
-
-    .example-step-content strong { color: var(--text); font-weight: 600; }
-
-    .example-verdict {
-      margin-top: 20px;
-      padding: 16px 20px;
-      background: rgba(239, 68, 68, 0.08);
-      border: 1px solid rgba(239, 68, 68, 0.2);
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .example-verdict .band-pill { flex-shrink: 0; }
-
-    .example-verdict-text {
-      font-size: 0.875rem;
-      color: var(--text-soft);
-      line-height: 1.5;
-    }
-
-    @media (max-width: 680px) {
-      .example-step { grid-template-columns: 1fr; gap: 4px; }
-      .example-step-label { font-size: 0.62rem; }
-    }
-
-    /* === FOOTER === */
-    footer {
-      padding: 48px 0;
-      border-top: 1px solid var(--border);
-    }
-
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .footer-note {
-      font-size: 0.8rem;
-      color: var(--text-dim);
-      max-width: 60ch;
-      line-height: 1.6;
-    }
-
-    .footer-note a {
-      color: var(--text-soft);
-      text-decoration: none;
-    }
-
+    .prompt-note { padding: 16px 24px; background: var(--bg-card-2); border-top: 1px solid var(--border); font-size: 0.84rem; color: var(--text-dim); }
+    footer { padding: 48px 0; }
+    .footer-inner { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
+    .footer-note { font-size: 0.82rem; color: var(--text-dim); max-width: 58ch; line-height: 1.6; }
+    .footer-note a { color: var(--text-soft); text-decoration: none; }
     .footer-note a:hover { color: var(--text); }
-
-    /* === RESPONSIVE === */
     @media (max-width: 680px) {
-      .hero { padding: 56px 0 48px; }
-      .hero h1 { font-size: 2.2rem; }
-      .fm-grid { grid-template-columns: 1fr; }
-      nav .nav-links { display: none; }
-      .bands-table { font-size: 0.82rem; }
-      .footer-inner { flex-direction: column; }
-      .section { padding: 56px 0; }
-      .mirror-rule { padding: 20px 22px; }
-      .mirror-rule p { font-size: 1.05rem; }
+      .hero { padding: 52px 0 44px; } .hero h1 { font-size: 2.1rem; }
+      .signs-grid { grid-template-columns: 1fr; }
+      .fq-card { grid-template-columns: 44px 1fr; gap: 16px; padding: 22px 20px; }
+      .fq-number { font-size: 2rem; } .fq-question { font-size: 1.15rem; }
+      .rung { grid-template-columns: 110px 1fr; }
+      .band-row { grid-template-columns: 1fr; gap: 12px; }
+      nav .nav-links { display: none; } .section { padding: 52px 0; }
+      .example-verdict { flex-direction: column; gap: 12px; }
+      .mirror { padding: 22px 24px; } .mirror-big { font-size: 1.15rem; }
     }
-
-    @media (prefers-reduced-motion: reduce) {
-      * { transition: none !important; }
-    }
-
-    /* === UTILITY === */
-    .sr-only {
-      position: absolute;
-      width: 1px; height: 1px;
-      padding: 0; margin: -1px;
-      overflow: hidden;
-      clip: rect(0,0,0,0);
-      white-space: nowrap;
-      border: 0;
-    }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <div class="wrap">
     <div class="inner">
       <a href="#" class="wordmark">Ground<span>Truth</span></a>
       <ul class="nav-links">
-        <li><a href="#failure-modes">Failure Modes</a></li>
-        <li><a href="#warrant">Warrant &amp; Provenance</a></li>
-        <li><a href="#evidence-rating">Evidence Rating</a></li>
-        <li><a href="#five-questions">Five Questions</a></li>
-        <li><a href="#ai-tool">AI Tool</a></li>
+        <li><a href="#questions">The 5 Questions</a></li>
+        <li><a href="#signs">Warning Signs</a></li>
+        <li><a href="#proof">Kinds of Proof</a></li>
+        <li><a href="#example">Example</a></li>
+        <li><a href="#tool">AI Tool</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
-<!-- HERO -->
 <header class="hero">
   <div class="wrap">
-    <p class="hero-eyebrow">An evidentiary framework</p>
-    <h1>Know when you are being <em>misled.</em></h1>
-    <p class="hero-sub">Propaganda does not announce itself. It works by manufacturing the appearance of evidence - repeating claims until they feel established, citing sources that trace back to one interested party, applying standards selectively depending on whose case they help. This framework names the techniques. Once you can name them, you can see them.</p>
+    <p class="hero-eyebrow">How to check if a claim is true</p>
+    <h1>Stop being fooled by claims that <em>sound</em> true.</h1>
+    <p class="hero-sub">Every day you are told things - by vendors, headlines, experts, people online - that are built to sound convincing whether or not they are real. This is a simple, repeatable way to tell the difference. Five questions, ten warning signs, and a free tool that runs the whole check for you.</p>
     <div class="hero-actions">
-      <a href="#ai-tool" class="btn btn-primary">Use the AI prompt tool</a>
-      <a href="#failure-modes" class="btn btn-ghost">See the ten failure modes</a>
+      <a href="#tool" class="btn btn-primary">Check a claim now</a>
+      <a href="#questions" class="btn btn-ghost">Learn the 5 questions</a>
     </div>
   </div>
 </header>
 
-<!-- FAILURE MODES -->
-<section class="section" id="failure-modes">
+<section class="stakes">
   <div class="wrap">
-    <p class="section-label">Section 01</p>
-    <h2 class="section-title">Ten named failure modes</h2>
-    <p class="section-sub">These are the specific techniques by which evidence is fabricated, inflated, or selectively applied. Each has a name so that when you see it, you can say exactly what is happening - and why it matters.</p>
-
-    <div class="fm-grid">
-
-      <div class="fm-card">
-        <p class="fm-code">FM-01</p>
-        <h3 class="fm-name">Citation laundering</h3>
-        <p class="fm-desc">A claim passes through multiple outlets, each citing the previous one, with no source in the chain ever citing primary evidence. Repetition creates the appearance of broad support that does not exist.</p>
-        <p class="fm-tell">How to spot it: trace every source to its origin. If the chain circles back or dead-ends at another secondary source, the claim has no anchor.</p>
-      </div>
-
-      <div class="fm-card">
-        <p class="fm-code">FM-02</p>
-        <h3 class="fm-name">Single-origin amplification</h3>
-        <p class="fm-desc">Multiple independent-seeming sources all trace back to the same single origin - one report, one dataset, one official statement. The sources are real; the independence is not.</p>
-        <p class="fm-tell">How to spot it: ten sources citing the same underlying report are one piece of evidence, not ten.</p>
-      </div>
-
-      <div class="fm-card">
-        <p class="fm-code">FM-03</p>
-        <h3 class="fm-name">Interested-party assertion</h3>
-        <p class="fm-desc">A claim is sourced exclusively to a party with a direct stake in the finding being true - a company, a regulator, an advocacy organisation. The claim may be true, but it is not yet evidenced.</p>
-        <p class="fm-tell">How to spot it: ask who benefits from this being believed. If the only sources are parties who benefit, the claim needs independent verification.</p>
-      </div>
-
-      <div class="fm-card">
-        <p class="fm-code">FM-04</p>
-        <h3 class="fm-name">Mandate creep</h3>
-        <p class="fm-desc">A body whose mandate covers X is cited as evidence for Y. A court issues provisional measures - this tells you a case was accepted for hearing, not that the claim is true. A committee passes a resolution - this tells you about voting composition, not about facts.</p>
-        <p class="fm-tell">How to spot it: check what the cited body was actually asked to decide, and whether the claim matches that specific decision.</p>
-      </div>
-
-      <div class="fm-card">
-        <p class="fm-code">FM-05</p>
-        <h3 class="fm-name">Retracted or superseded source</h3>
-        <p class="fm-desc">A claim rests on a source that has since been corrected, retracted, or superseded by better evidence - but the original continues to circulate.</p>
-        <p class="fm-tell">How to spot it: check whether the source is the most recent available, and whether subsequent research has revised the finding.</p>
-      </div>
-
-      <div class="fm-card">
-        <p class="fm-code">FM-06</p>
-        <h3 class="fm-name">Decontextualised statistic</h3>
-        <p class="fm-desc">A real number cited without the context that gives it meaning - without demographic breakdown, without comparison to comparable cases, without methodological notes. The number may be accurate; the claim built on it may not be.</p>
-        <p class="fm-tell">How to spot it: ask what the full dataset shows, not just the headline figure.</p>
-      </div>
-
-      <div class="fm-card">
-        <p class="fm-code">FM-07</p>
-        <h3 class="fm-name">False precision</h3>
-        <p class="fm-desc">A claim stated with numerical specificity that implies rigorous measurement, when the underlying data is estimated, modelled, or given as a range. A single figure cited from a source that itself provides a wide uncertainty interval.</p>
-        <p class="fm-tell">How to spot it: check whether the source gives a range or margin, and whether the claim has silently dropped it.</p>
-      </div>
-
-      <div class="fm-card">
-        <p class="fm-code">FM-08</p>
-        <h3 class="fm-name">Motive attribution without evidence</h3>
-        <p class="fm-desc">A claim about what a party intended, based only on the outcome rather than on documented orders, statements, or systematic patterns of behaviour. Intent is a separate factual question from outcome and requires its own direct evidence.</p>
-        <p class="fm-tell">How to spot it: ask what evidence of intent exists - documents, orders, explicit statements - independent of the outcome itself.</p>
-      </div>
-
-      <div class="fm-card">
-        <p class="fm-code">FM-09</p>
-        <h3 class="fm-name">Isolated quote</h3>
-        <p class="fm-desc">A statement by one official, soldier, or commentator cited as representing the policy or intent of an entire government, organisation, or people.</p>
-        <p class="fm-tell">How to spot it: ask whether the quote reflects documented official policy, or whether it is an individual statement by someone without authority to set policy.</p>
-      </div>
-
-      <div class="fm-card">
-        <p class="fm-code">FM-10</p>
-        <h3 class="fm-name">Asymmetric application</h3>
-        <p class="fm-desc">The evidentiary standard applied to one party in a dispute is not applied to the other. Sources accepted for one side are rejected for the other using different criteria.</p>
-        <p class="fm-tell">How to spot it: ask whether you would accept this source type if it supported the opposite conclusion.</p>
-      </div>
-
-    </div>
+    <p>We worry about a free press dying in darkness. But there is a second darkness just as dangerous: <em>not being able to tell, for yourself, whether what you are being told is true.</em> A free press cannot save a person who cannot spot a manufactured claim. This is the light for that second darkness.</p>
   </div>
 </section>
 
-<!-- WARRANT & PROVENANCE -->
-<section class="section" id="warrant">
+<section class="section" id="questions">
   <div class="wrap">
-    <p class="section-label">Section 02</p>
-    <h2 class="section-title">Warrant, provenance, and independence</h2>
-    <p class="section-sub">A claim is a chain from evidence to conclusion. Before asking whether a claim is true, ask what kind of evidence it rests on, whether that evidence survives being traced to its origin, and how many genuinely independent lines agree. Each question can collapse a claim that looked solid.</p>
-
-    <h3 style="font-family:'DM Serif Display',serif;font-size:1.25rem;margin-bottom:16px;margin-top:0;color:var(--text);">The warrant hierarchy - what kind of evidence is this?</h3>
-    <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:20px;max-width:62ch;">The type of evidence sets the ceiling on how confident you can be. A claim can only be as strong as the evidence it stands on. Higher warrant types are harder to fabricate and harder for interested parties to revise.</p>
-
-    <div class="warrant-list">
-      <div class="warrant-item">
-        <div class="warrant-num w-strongest">1</div>
-        <div class="warrant-body">
-          <p class="warrant-name">Repeatable observation</p>
-          <p class="warrant-desc">Re-runnable experiments and measurements - radiocarbon dating, clinical trials with replication, established physics. The strongest because anyone can re-run the test and get the same result.</p>
-        </div>
-      </div>
-      <div class="warrant-item">
-        <div class="warrant-num w-strong">2</div>
-        <div class="warrant-body">
-          <p class="warrant-name">Physical and forensic evidence</p>
-          <p class="warrant-desc">Material records that exist independently of any account - forensic analysis, satellite imagery, archaeological findings, authenticated documents, DNA. Cannot be revised by a party with an interest in the outcome.</p>
-        </div>
-      </div>
-      <div class="warrant-item">
-        <div class="warrant-num w-good">3</div>
-        <div class="warrant-body">
-          <p class="warrant-name">Contemporaneous record</p>
-          <p class="warrant-desc">Official documents, registers, and records created at the time of the events by parties present - contracts, censuses, court transcripts, contemporaneous news reports. Stronger than later reconstructions.</p>
-        </div>
-      </div>
-      <div class="warrant-item">
-        <div class="warrant-num w-inferred">4</div>
-        <div class="warrant-body">
-          <p class="warrant-name">Reasoned inference from 1-3</p>
-          <p class="warrant-desc">Conclusions derived from hard evidence by stated logic. Valid when the logic is explicit and the underlying evidence is strong - but the inference itself adds uncertainty. The reasoning must be shown, not just the conclusion.</p>
-        </div>
-      </div>
-      <div class="warrant-item">
-        <div class="warrant-num w-testimony">5</div>
-        <div class="warrant-body">
-          <p class="warrant-name">Testimony and confession</p>
-          <p class="warrant-desc">Direct accounts from witnesses or participants. Valuable but filtered by memory, motive, and sometimes coercion. Strongest when multiple accounts were collected separately and are mutually consistent without coordination.</p>
-        </div>
-      </div>
-      <div class="warrant-item">
-        <div class="warrant-num w-secondary">6</div>
-        <div class="warrant-body">
-          <p class="warrant-name">Secondary synthesis</p>
-          <p class="warrant-desc">Expert analysis, investigative journalism, NGO reports. These are pointers toward primary evidence - not evidence themselves. Their only legitimate function is to lead you to a primary source. Always ask: what primary evidence does this rest on?</p>
-        </div>
-      </div>
-      <div class="warrant-item">
-        <div class="warrant-num w-assertion">7</div>
-        <div class="warrant-body">
-          <p class="warrant-name">Assertion and opinion</p>
-          <p class="warrant-desc">Claims without independent evidential basis. Includes social media posts, unattributed statements, and claims by interested parties that cannot be traced to any primary source. Not evidence. Treat as a lead to investigate, not a fact to cite.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="callout-box" style="border-left-color: var(--red); margin-top: 28px;">
-      <strong>Hard rule on tertiary sources:</strong> Wikipedia, unsigned encyclopaedia-style overviews, aggregator sites, and advocacy blogs are never cited as authority. On contested topics they fail provenance, independence, and robustness at once - editable by interested parties, and typically one or two steps removed from whatever they summarise. Use them only as a finding aid to locate the primary source beneath, which is then verified and cited directly. A claim that cannot be re-grounded below the tertiary layer is unanchored.
-    </div>
-
-    <h3 style="font-family:'DM Serif Display',serif;font-size:1.25rem;margin:48px 0 16px;color:var(--text);">Provenance - does it survive being traced to its origin?</h3>
-    <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:16px;max-width:62ch;">Follow any source upstream. If it collapses onto a single, discredited, or fabricated origin, the credence collapses with it - regardless of how many outlets repeated it downstream. The pattern: thousands of citations, one retracted study underneath. Volume of repetition is not evidence of truth.</p>
-
-    <div class="callout-box" style="border-left-color: var(--amber);">
-      <strong>The provenance habit:</strong> before being impressed by how many sources say something, ask what they are all ultimately citing. If ten news outlets all reported the same claim on the same day, that is one piece of evidence - the original source - not ten. Trace it before trusting it.
-    </div>
-
-    <h3 style="font-family:'DM Serif Display',serif;font-size:1.25rem;margin:48px 0 12px;color:var(--text);">Independence - how many genuinely separate lines agree?</h3>
-    <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:20px;max-width:62ch;">Convergence of independent lines is what raises confidence. But independence must be demonstrated, not assumed. Two sources are only independent to the degree they share none of the following. If they share any of these, dependent repetitions add nothing to the evidential weight.</p>
-
-    <div class="indep-grid">
-      <div class="indep-card">
-        <p class="indep-num">1</p>
-        <p class="indep-label">Origin</p>
-        <p class="indep-desc">Same witness, document, or ultimate source</p>
-      </div>
-      <div class="indep-card">
-        <p class="indep-num">2</p>
-        <p class="indep-label">Method</p>
-        <p class="indep-desc">Same technique, same blind spots</p>
-      </div>
-      <div class="indep-card">
-        <p class="indep-num">3</p>
-        <p class="indep-label">Data</p>
-        <p class="indep-desc">Same underlying dataset</p>
-      </div>
-      <div class="indep-card">
-        <p class="indep-num">4</p>
-        <p class="indep-label">Institution</p>
-        <p class="indep-desc">Same body, funder, or pipeline</p>
-      </div>
-      <div class="indep-card">
-        <p class="indep-num">5</p>
-        <p class="indep-label">Motive</p>
-        <p class="indep-desc">Same incentive to reach the answer</p>
-      </div>
-    </div>
-
-    <h3 style="font-family:'DM Serif Display',serif;font-size:1.25rem;margin:48px 0 12px;color:var(--text);">Rival hypotheses - what else could explain the evidence?</h3>
-    <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:16px;max-width:62ch;">Evidence is never assessed against one claim in isolation - evidence consistent with three explanations confirms none of them. For each significant claim, lay out the competing explanations and ask of each piece of evidence: not "does it fit my claim?" but "which explanation does it fit best, and which does it actually rule out?"</p>
-
-    <div class="callout-box" style="border-left-color: var(--blue); margin-top: 0;">
-      <strong>Two rules for honest rival hypothesis testing.</strong> The rival set must always include the strongest opposing account in its best form - the steelman, not a weakened version you can easily dismiss. And evidence that fits all rivals equally is non-discriminating: it moves no confidence in any direction, however dramatic it looks. Mark it as such and move on.
-    </div>
-
-    <h3 style="font-family:'DM Serif Display',serif;font-size:1.25rem;margin:48px 0 12px;color:var(--text);">The weakest-link principle</h3>
-    <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:16px;max-width:62ch;">A claim is a chain from evidence to conclusion, and each link can have a different strength. The conclusion can be no stronger than the weakest link that carries it. A chain of strong evidence that passes through one weak inference inherits the weakness of that inference - and the final confidence is capped there, not averaged across the chain.</p>
-
-    <div class="callout-box" style="border-left-color: var(--amber); margin-top: 0;">
-      <strong>In practice:</strong> a vendor report with solid survey data (W3), a credible methodology (W4), and a conclusion that requires an inferential leap the data does not actually support (W4 to W4 is fine; W3 data supporting a W4 conclusion with a hidden causal step is not) - the whole chain is capped at the weakest link. Find the leap. That is where the claim lives or dies.
-    </div>
-
-    <h3 style="font-family:'DM Serif Display',serif;font-size:1.25rem;margin:48px 0 12px;color:var(--text);">The silence sub-rule</h3>
-    <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:16px;max-width:62ch;">Absence of evidence only counts against a claim where, if the claim were true, surviving evidence would be expected to exist. Where survival or discovery is unlikely, silence is neutral - and must be declared neutral by every party in the debate, not selectively invoked when convenient.</p>
-
-    <div class="callout-box" style="border-left-color: var(--amber); margin-top: 0;">
-      <strong>The test:</strong> before treating the absence of a document, record, or data point as evidence against a claim, ask: if this were true, would we expect evidence to have survived and been found? If no - or if the answer depends on who controlled the records - silence is not evidence. Apply this identically regardless of which conclusion it helps.
-    </div>
-
-    <h3 style="font-family:'DM Serif Display',serif;font-size:1.25rem;margin:48px 0 12px;color:var(--text);">The assembly check - is the evidence set complete?</h3>
-    <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:16px;max-width:62ch;">Every claim in an argument can be verified and the argument can still mislead if the evidence set was selected. A hundred documented facts on one side can each be true and the picture still be false when comparable facts on the other side were filtered out. The assembly check runs on the set of evidence, not on individual claims.</p>
-
-    <div class="callout-box" style="border-left-color: var(--blue); margin-top: 0;">
-      <strong>Four assembly questions.</strong> (1) Representativeness: is the cited evidence representative of what exists, or a curated slice? (2) Disconfirmation: was contrary evidence sought and addressed, or omitted? (3) Comparability: for any comparative conclusion, are equivalent facts about all parties held to the same standard? (4) Salient omission: what known evidence is absent, and would including it change the conclusion? This check binds the framework to itself - the site's own arguments must pass it too.
-    </div>
-
-    <h3 style="font-family:'DM Serif Display',serif;font-size:1.25rem;margin:48px 0 16px;color:var(--text);">Claim type caps the ceiling</h3>
-    <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:20px;max-width:62ch;">Not all claims can be equally well established, regardless of how much evidence exists. The type of claim fixes the highest band it can reach - because no quantity of evidence turns an interpretation into an observation. Identify the claim type before assessing the evidence.</p>
-
-    <table class="claim-types">
-      <thead>
-        <tr>
-          <th>Claim type</th>
-          <th>Example</th>
-          <th>Ceiling</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Existence / occurrence</td>
-          <td class="ct-example">An event happened; a company made a product</td>
-          <td><span class="ceiling-pill ceil-est">Established</span></td>
-        </tr>
-        <tr>
-          <td>Quantity / magnitude</td>
-          <td class="ct-example">Roughly N cases occurred; market size is $X</td>
-          <td><span class="ceiling-pill ceil-est">Established</span> if independently measured</td>
-        </tr>
-        <tr>
-          <td>Attribution</td>
-          <td class="ct-example">This data shows this pattern; this document says this</td>
-          <td><span class="ceiling-pill ceil-prob">Probable</span></td>
-        </tr>
-        <tr>
-          <td>Causal</td>
-          <td class="ct-example">X caused Y; the policy produced this outcome</td>
-          <td><span class="ceiling-pill ceil-prob">Probable</span></td>
-        </tr>
-        <tr>
-          <td>Intent / mental state</td>
-          <td class="ct-example">The decision was made in order to deceive</td>
-          <td><span class="ceiling-pill ceil-prob">Probable</span></td>
-        </tr>
-        <tr>
-          <td>Evaluative / definitional</td>
-          <td class="ct-example">This constitutes fraud / negligence / misconduct</td>
-          <td><span class="ceiling-pill ceil-none">Never scored whole - decompose first</span></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="callout-box" style="margin-top: 24px;">
-      <strong>On evaluative claims:</strong> a loaded label ("fraud", "negligence", "misconduct", "misleading") must be split into two questions - what factually happened (scored normally against evidence) and whether those facts meet the stated criteria of the term (argued openly, with the definition on the table). This stops a contested label from borrowing certainty from the facts beneath it.
-    </div>
-
-    <div class="mirror-rule" id="mirror-rule" style="margin-top:48px;">
-      <p class="mr-label">The Mirror Rule</p>
-      <p>Every evidentiary standard applied to one party in a dispute must be applied identically to all other parties.</p>
-      <p>If you would dismiss a source as commercially interested, apply the same scrutiny to sources with the opposite commercial interest. If you would accept an NGO report on one side, apply the same acceptance threshold to NGO reports on the other. The test: would you apply this standard if it supported the opposite conclusion? If the answer is no, adjust until it is yes.</p>
-    </div>
-  </div>
-</section>
-
-<!-- EVIDENCE RATING -->
-<section class="section" id="evidence-rating">
-  <div class="wrap">
-    <p class="section-label">Section 03</p>
-    <h2 class="section-title">Five-band evidence rating</h2>
-    <p class="section-sub">Rather than reaching for words like "probably" or "seems to be" - words that different readers interpret at wildly different confidence levels - this framework maps claims to a numbered scale. The thresholds are borrowed from two mature traditions: United States intelligence doctrine on estimative probability, and the legal system's graded standards of proof.</p>
-
-    <table class="bands-table">
-      <thead>
-        <tr>
-          <th>Rating</th>
-          <th>Confidence</th>
-          <th>What it means</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="band-pill band-est">Established</span></td>
-          <td class="band-range">95 - 99%+</td>
-          <td class="band-desc">Multiple independent lines of primary evidence converge. The current state of the field. Equivalent to "beyond reasonable doubt."</td>
-        </tr>
-        <tr>
-          <td><span class="band-pill band-prob">Probable</span></td>
-          <td class="band-range">70 - 95%</td>
-          <td class="band-desc">More likely true than not. Credible sourcing with some gaps or minor contrary evidence. Equivalent to "clear and convincing."</td>
-        </tr>
-        <tr>
-          <td><span class="band-pill band-con">Contested</span></td>
-          <td class="band-range">30 - 70%</td>
-          <td class="band-desc">Credible evidence and argument exist on both sides. Genuinely uncertain. "Contested" does not mean both sides are equally supported - look at which side has the stronger primary sourcing.</td>
-        </tr>
-        <tr>
-          <td><span class="band-pill band-dbt">Doubtful</span></td>
-          <td class="band-range">5 - 30%</td>
-          <td class="band-desc">The weight of evidence points against it. Primary sources do not support it. Relies on interested-secondary sources or outliers. Fails the civil standard.</td>
-        </tr>
-        <tr>
-          <td><span class="band-pill band-ref">Refuted</span></td>
-          <td class="band-range">&lt;5%</td>
-          <td class="band-desc">Directly contradicted by primary sources or forensic evidence. The claim is positively disproved, not merely unproven.</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="callout-box" style="border-left-color:var(--blue); margin-top:32px;">
-      <strong>Evidential weight is separate from the band.</strong> Two claims can both sit at 50% confidence for opposite reasons - one finely balanced between two strong bodies of evidence, the other resting on almost nothing. The band tells you the current probability. The weight (heavy / moderate / light) tells you how far one new piece of evidence could move it. A light-weight claim at 50% could swing to 90% or 10% with a single document. A heavy-weight claim at 95% would need an extraordinary new finding to shift. Always ask both: what is the rating, and how much is it standing on?
-    </div>
-
-    <div class="callout-box" style="margin-top:16px;">
-      <strong>Three permanent rules about confidence numbers.</strong> Never 0, never 100 - certainty is not on offer. Resolution is bounded - credences are stated in ranges, not precise points, because finer precision cannot be derived from most evidence and claiming it is itself a failure mode (FM-07, false precision). A confidence interval is a disciplined, auditable belief - not a measurement.
-    </div>
-  </div>
-</section>
-
-<!-- FIVE QUESTIONS -->
-<section class="section" id="five-questions">
-  <div class="wrap">
-    <p class="section-label">Section 04</p>
-    <h2 class="section-title">The five-question test</h2>
-    <p class="section-sub">A reader who never opens the full machinery can run the entire framework with five questions. If only one habit survives, make it question 2 - ask where a claim traces back to before being impressed by how many places you've seen it.</p>
-
+    <p class="section-label">Start here</p>
+    <h2 class="section-title">The five questions</h2>
+    <p class="section-sub">This is the whole method. Ask these five questions about any claim, in any order, and you will catch the large majority of things that are designed to mislead you. Everything else on this page just explains how to answer them well.</p>
     <div class="five-q">
-      <div class="fq-item">
-        <div class="fq-num">1</div>
+      <div class="fq-card">
+        <div class="fq-number">1</div>
         <div>
-          <p class="fq-q">What kind of claim is this, and what is it ultimately based on?</p>
-          <p class="fq-maps">Maps to: Claim type + Warrant hierarchy</p>
+          <p class="fq-question">What kind of proof is this, really?</p>
+          <p class="fq-plain">Is it something you could re-test, like a measurement or an experiment? A physical record? Or is it just someone's opinion, an estimate, or a story passed along? <strong>Stronger proof is harder to fake.</strong> Weak proof dressed up as strong proof is the most common trick of all.</p>
         </div>
       </div>
-      <div class="fq-item">
-        <div class="fq-num">2</div>
+      <div class="fq-card">
+        <div class="fq-number">2</div>
         <div>
-          <p class="fq-q">Where does it trace back to?</p>
-          <p class="fq-maps">Maps to: Provenance - follow upstream until you hit a primary source or a dead end</p>
+          <p class="fq-question">Where does it actually come from?</p>
+          <p class="fq-plain">Follow the claim back to its original source. Not the website that repeated it - the place it started. <strong>If ten articles all repeat the same claim, but they are all quoting the same single report, that is one piece of evidence, not ten.</strong> This is the single most useful habit on this page.</p>
         </div>
       </div>
-      <div class="fq-item">
-        <div class="fq-num">3</div>
+      <div class="fq-card">
+        <div class="fq-number">3</div>
         <div>
-          <p class="fq-q">How many genuinely independent lines say it - and what else could explain the evidence?</p>
-          <p class="fq-maps">Maps to: Independence (five dimensions) + rival hypotheses</p>
+          <p class="fq-question">Do the sources really agree, or just repeat each other?</p>
+          <p class="fq-plain">Two sources only count as separate if they didn't use the same data, the same method, or the same people. <strong>Lots of voices saying the same thing means nothing if they all got it from one place.</strong> Also ask: what else could explain this? If the evidence fits several explanations equally, it proves none of them.</p>
         </div>
       </div>
-      <div class="fq-item">
-        <div class="fq-num">4</div>
+      <div class="fq-card">
+        <div class="fq-number">4</div>
         <div>
-          <p class="fq-q">Who benefits if I believe this, and what is being left out?</p>
-          <p class="fq-maps">Maps to: Interest + assembly check (is the evidence representative, or a selected slice?)</p>
+          <p class="fq-question">Who gains if you believe it - and what's being left out?</p>
+          <p class="fq-plain">A claim made only by someone who profits from you believing it isn't proven - it's just asserted. <strong>And even true facts can mislead if the inconvenient ones are quietly left out.</strong> Ask what you're not being shown.</p>
         </div>
       </div>
-      <div class="fq-item">
-        <div class="fq-num">5</div>
+      <div class="fq-card">
+        <div class="fq-number">5</div>
         <div>
-          <p class="fq-q">Has anyone serious tried to disprove this and failed?</p>
-          <p class="fq-maps">Maps to: Robustness / evidential weight - surviving hostile scrutiny is what locks confidence in</p>
+          <p class="fq-question">Have serious people tried to prove it wrong and failed?</p>
+          <p class="fq-plain">A claim that has survived genuine, hostile attempts to break it is far stronger than one nobody has tested. <strong>Ask whether the people who would love to disprove this have tried - and what happened when they did.</strong></p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- WORKED EXAMPLE -->
-<section class="section" id="worked-example">
+<section class="section" id="signs">
   <div class="wrap">
-    <p class="section-label">Section 05 - Worked Example</p>
-    <h2 class="section-title">The framework in action</h2>
-    <p class="section-sub">Abstract principles land differently when you run them on a real claim. Here is the full framework applied to a claim type that anyone who has sat through a vendor pitch or board presentation will recognise immediately.</p>
+    <p class="section-label">Ten warning signs</p>
+    <h2 class="section-title">What it looks like when the answers go wrong</h2>
+    <p class="section-sub">These are the ten most common ways a claim is made to look better-supported than it is. Each one has a name, so that when you spot it, you can say exactly what is happening - to yourself, or out loud in a meeting.</p>
+    <div class="signs-grid">
+      <div class="sign-card">
+        <p class="sign-code">SIGN 01</p>
+        <h3 class="sign-name">Repeating isn't proving</h3>
+        <p class="sign-desc">A claim gets passed from one outlet to the next, each one pointing at the last, until it feels true just because it is everywhere. But no one in the chain ever shows the original proof.</p>
+        <p class="sign-tell"><strong>Spot it</strong><br>Trace it back. If the trail loops or dead-ends without ever reaching real evidence, there is nothing underneath it.</p>
+      </div>
+      <div class="sign-card">
+        <p class="sign-code">SIGN 02</p>
+        <h3 class="sign-name">Many voices, one source</h3>
+        <p class="sign-desc">Lots of seemingly separate sources all turn out to be quoting the same single report, dataset, or statement. The voices are real. The independence is an illusion.</p>
+        <p class="sign-tell"><strong>Spot it</strong><br>Ten articles citing the same study are one piece of evidence, not ten. Check what they all point back to.</p>
+      </div>
+      <div class="sign-card">
+        <p class="sign-code">SIGN 03</p>
+        <h3 class="sign-name">Only the interested party says so</h3>
+        <p class="sign-desc">The only source for a claim is someone who gains directly if you believe it - a company, a campaign group, an official body. It might be true, but it has not yet been shown to be.</p>
+        <p class="sign-tell"><strong>Spot it</strong><br>Ask who benefits. If every source benefits from you believing it, you need an independent check.</p>
+      </div>
+      <div class="sign-card">
+        <p class="sign-code">SIGN 04</p>
+        <h3 class="sign-name">Borrowed authority</h3>
+        <p class="sign-desc">An official body is cited as proof of something it never actually ruled on. A case being accepted for hearing is treated as a verdict. A vote is treated as a fact about the world.</p>
+        <p class="sign-tell"><strong>Spot it</strong><br>Check what the body was actually asked, and what it actually decided. It is often narrower than the claim.</p>
+      </div>
+      <div class="sign-card">
+        <p class="sign-code">SIGN 05</p>
+        <h3 class="sign-name">Out of date</h3>
+        <p class="sign-desc">The claim rests on a source that has since been corrected, withdrawn, or replaced by better evidence - but the original keeps circulating as if nothing changed.</p>
+        <p class="sign-tell"><strong>Spot it</strong><br>Check whether this is still the most recent and best evidence, or whether it has been overtaken.</p>
+      </div>
+      <div class="sign-card">
+        <p class="sign-code">SIGN 06</p>
+        <h3 class="sign-name">A number with no context</h3>
+        <p class="sign-desc">A real figure is quoted with none of the context that gives it meaning - no comparison, no baseline, no explanation of how it was measured. The number may be accurate and the conclusion still wrong.</p>
+        <p class="sign-tell"><strong>Spot it</strong><br>Ask: compared to what? Measured how? What does the full picture show, not just this one figure?</p>
+      </div>
+      <div class="sign-card">
+        <p class="sign-code">SIGN 07</p>
+        <h3 class="sign-name">Fake precision</h3>
+        <p class="sign-desc">A claim is stated with exact-sounding numbers that the underlying data can't actually support - a single sharp figure pulled from something that was really just a rough estimate or a wide range.</p>
+        <p class="sign-tell"><strong>Spot it</strong><br>Check whether the original gave a range or a margin that has been quietly dropped to sound more certain.</p>
+      </div>
+      <div class="sign-card">
+        <p class="sign-code">SIGN 08</p>
+        <h3 class="sign-name">Guessing the motive</h3>
+        <p class="sign-desc">A claim about why someone did something, based only on the result - not on anything they actually said, wrote, or decided. What happened and why it happened are two separate questions.</p>
+        <p class="sign-tell"><strong>Spot it</strong><br>Ask what direct evidence of intention exists, separate from the outcome itself.</p>
+      </div>
+      <div class="sign-card">
+        <p class="sign-code">SIGN 09</p>
+        <h3 class="sign-name">One person, treated as everyone</h3>
+        <p class="sign-desc">A single person's comment is presented as the position of an entire company, group, or government - even when that person had no authority to speak for all of them.</p>
+        <p class="sign-tell"><strong>Spot it</strong><br>Ask whether this is official policy, or just one individual's words being made to stand for the whole.</p>
+      </div>
+      <div class="sign-card">
+        <p class="sign-code">SIGN 10</p>
+        <h3 class="sign-name">Different rules for different sides</h3>
+        <p class="sign-desc">A source is trusted when it supports one side and dismissed when it supports the other - using standards that quietly change depending on the answer they produce.</p>
+        <p class="sign-tell"><strong>Spot it</strong><br>Ask: would I accept this same source if it backed the opposite conclusion? If not, your standard is the problem.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
+<section class="section" id="proof">
+  <div class="wrap">
+    <p class="section-label">Question 1, in detail</p>
+    <h2 class="section-title">Not all proof is equal</h2>
+    <p class="section-sub">When you ask "what kind of proof is this?", this is the ladder you are placing it on. The higher up, the harder it is to fake and the more confident you can be. The lower down, the more it is just a starting point that needs checking.</p>
+    <div class="ladder">
+      <div class="rung">
+        <div class="rung-strength s-top"><span class="rung-tier">Strongest</span><span class="rung-bar"></span></div>
+        <div class="rung-body"><p class="rung-name">Something you can re-test</p><p class="rung-desc">An experiment or measurement anyone can run again and get the same result - a lab test, a repeated study. The strongest kind, because re-testing it removes any need to trust the person reporting it.</p></div>
+      </div>
+      <div class="rung">
+        <div class="rung-strength s-high"><span class="rung-tier">Very strong</span><span class="rung-bar"></span></div>
+        <div class="rung-body"><p class="rung-name">Physical evidence</p><p class="rung-desc">Something that exists in the world independently of anyone's account - forensic results, dated imagery, an authenticated document. It can't be quietly changed by someone who wants a different answer.</p></div>
+      </div>
+      <div class="rung">
+        <div class="rung-strength s-mid"><span class="rung-tier">Strong</span><span class="rung-bar"></span></div>
+        <div class="rung-body"><p class="rung-name">A record made at the time</p><p class="rung-desc">Documents created as events happened, by people who were there - contracts, official records, transcripts. Stronger than something reconstructed from memory long afterwards.</p></div>
+      </div>
+      <div class="rung">
+        <div class="rung-strength s-inf"><span class="rung-tier">Moderate</span><span class="rung-bar"></span></div>
+        <div class="rung-body"><p class="rung-name">A reasoned conclusion</p><p class="rung-desc">A conclusion worked out from solid evidence using clear logic. Only as good as both the evidence under it and the reasoning - and the reasoning has to be shown, not just asserted.</p></div>
+      </div>
+      <div class="rung">
+        <div class="rung-strength s-test"><span class="rung-tier">Use with care</span><span class="rung-bar"></span></div>
+        <div class="rung-body"><p class="rung-name">Eyewitness accounts</p><p class="rung-desc">Direct accounts from people who were there. Genuinely useful, but shaped by memory and motive. Strongest when several accounts were collected separately and still match without anyone comparing notes.</p></div>
+      </div>
+      <div class="rung">
+        <div class="rung-strength s-sec"><span class="rung-tier">A pointer only</span><span class="rung-bar"></span></div>
+        <div class="rung-body"><p class="rung-name">Expert summaries and reporting</p><p class="rung-desc">Analysis, journalism, and organisation reports. These point you toward the evidence - they are not the evidence themselves. Always ask what original proof they rest on.</p></div>
+      </div>
+      <div class="rung">
+        <div class="rung-strength s-low"><span class="rung-tier">Not proof</span><span class="rung-bar"></span></div>
+        <div class="rung-body"><p class="rung-name">Opinion and assertion</p><p class="rung-desc">A claim with nothing independent under it - a social post, an unsourced statement. Treat it as a lead to look into, never as something to repeat as fact.</p></div>
+      </div>
+    </div>
+    <div class="callout red">
+      <strong>One hard rule.</strong> Open or crowd-edited summary sites (like Wikipedia) and opinion blogs are never proof on their own. They can be a handy way to find the original source - but then you go and check that original source directly. If a claim can't be traced down to something real underneath, it isn't anchored to anything.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="confidence">
+  <div class="wrap">
+    <p class="section-label">Putting it together</p>
+    <h2 class="section-title">How sure should you be?</h2>
+    <p class="section-sub conf-intro">Once you've answered the five questions, you can place a claim into one of five honest levels of confidence. These are deliberately plain bands, not false precision - the point is to stop using vague words like "probably," which different people read completely differently.</p>
+    <div class="bands">
+      <div class="band-row"><span class="band-pill band-est">Established</span><p class="band-text"><strong>About as sure as we get.</strong> Several independent lines of strong proof all point the same way. Treat it as settled unless something extraordinary overturns it.</p></div>
+      <div class="band-row"><span class="band-pill band-prob">Probable</span><p class="band-text"><strong>More likely true than not.</strong> Good evidence, with some gaps or a bit of disagreement. Reasonable to act on, but stay open to new information.</p></div>
+      <div class="band-row"><span class="band-pill band-con">Contested</span><p class="band-text"><strong>Genuinely unsettled.</strong> Real evidence on both sides. This does not mean both sides are equally strong - look at which one has the better original proof - but honestly, it isn't resolved.</p></div>
+      <div class="band-row"><span class="band-pill band-dbt">Doubtful</span><p class="band-text"><strong>Probably not true.</strong> The weight of evidence points against it. It leans on weak or interested sources, or doesn't trace back to anything solid.</p></div>
+      <div class="band-row"><span class="band-pill band-ref">Refuted</span><p class="band-text"><strong>Shown to be false.</strong> Directly contradicted by strong evidence. Not merely unproven - actually disproven.</p></div>
+    </div>
+    <div class="callout blue">
+      <strong>A note on honesty.</strong> Nothing is ever 100% certain or 0% certain - the scale never reaches the very ends. And the level tells you only how things stand right now. A claim can be weakly supported today and become solid tomorrow with one good piece of evidence, or the reverse. Always ask not just how confident to be, but how much that could change.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="mirror">
+  <div class="wrap">
+    <p class="section-label">The one rule that holds it together</p>
+    <h2 class="section-title">The mirror rule</h2>
+    <p class="section-sub">Every test on this page only works if you apply it evenly. This is the rule that keeps you honest - including with yourself.</p>
+    <div class="mirror">
+      <p class="mirror-label">The mirror rule</p>
+      <p class="mirror-big">Whatever standard you apply to a claim you dislike, apply exactly the same standard to a claim you want to be true.</p>
+      <p class="mirror-small">If you would dismiss a source because it has an agenda, dismiss sources with the opposite agenda just as readily. If you would accept a report because it agrees with you, ask whether you would accept the same kind of report if it didn't. The test is simple: would I judge this the same way if it pointed to the opposite conclusion? If the answer is no, your standard is doing the work, not the evidence. This applies to this very website too - hold it to its own rules.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="example">
+  <div class="wrap">
+    <p class="section-label">Watch it work</p>
+    <h2 class="section-title">The five questions, on a real claim</h2>
+    <p class="section-sub">Here is the whole method applied to something you have almost certainly seen a version of - a product claim backed by "independent research." Watch how fast it falls apart under the five questions.</p>
     <div class="example-box">
-      <div class="example-header">
-        <span class="example-tag">Claim under assessment</span>
-        <span class="example-title">Vendor product claim with commissioned research</span>
+      <div class="example-claim">
+        <span class="q">The claim</span>
+        "Our software makes teams 40% more productive. This is backed by an independent study from Meridian Research Group."
       </div>
       <div class="example-body">
-        <div class="example-claim">"Our platform increases team productivity by 40%. This is supported by an independent study conducted by Meridian Research Group."</div>
-
-        <div class="example-steps">
-          <div class="example-step">
-            <span class="example-step-label">Claim type</span>
-            <span class="example-step-content"><strong>Quantity / magnitude</strong> - a specific percentage improvement. Ceiling: Established, if independently measured. The word "independent" in the claim is doing critical work - we need to test it.</span>
-          </div>
-          <div class="example-step">
-            <span class="example-step-label">Warrant</span>
-            <span class="example-step-content">The source is a research report - <strong>W6, secondary synthesis</strong>. The question is what primary evidence it rests on. Commissioned research typically rests on surveys (W5 - testimony) or usage data provided by the vendor (W3, but from an interested party). Neither reaches W1 repeatable observation without independent replication.</span>
-          </div>
-          <div class="example-step">
-            <span class="example-step-label">Provenance</span>
-            <span class="example-step-content">Trace it: the study was <strong>commissioned by the vendor</strong>. Meridian Research Group conducted it, but the research brief, participant selection, and underlying usage dataset were provided by the vendor. The chain terminates at the interested party - it does not reach an independent origin.</span>
-          </div>
-          <div class="example-step">
-            <span class="example-step-label">Independence</span>
-            <span class="example-step-content">Three apparent sources - the vendor claim, the research report, and Meridian's name. Test the five dimensions: <strong>Origin</strong> (same - vendor commissioned and provided data), <strong>Data</strong> (same - vendor dataset), <strong>Institution</strong> (Meridian lists the vendor as a client), <strong>Motive</strong> (same - all benefit from a positive finding). This is <strong>zero independent lines</strong>, not three.</span>
-          </div>
-          <div class="example-step">
-            <span class="example-step-label">Rival hypotheses</span>
-            <span class="example-step-content">Alternative explanations for a 40% productivity figure: (a) genuine product effect; (b) selection bias - only high-performing teams were measured; (c) Hawthorne effect - teams performed better because they knew they were being studied; (d) the metric definition was chosen to maximise the number. The study design would need to explicitly rule out (b), (c), and (d) using independent methodology. It almost certainly does not.</span>
-          </div>
-          <div class="example-step">
-            <span class="example-step-label">Failure modes</span>
-            <span class="example-step-content"><strong>FM-02 Single-origin amplification</strong> - three sources that all trace to the vendor. <strong>FM-03 Interested-party assertion</strong> - the only evidence comes from a party with a direct commercial stake. <strong>FM-07 False precision</strong> - "40%" implies rigorous measurement; the underlying methodology almost certainly cannot support a figure at that precision.</span>
-          </div>
-          <div class="example-step">
-            <span class="example-step-label">What would settle it</span>
-            <span class="example-step-content">An independently designed study with a control group, conducted by researchers with no financial relationship to the vendor, using a pre-registered methodology, with the raw data available for inspection. Replication by a second independent team. That is the W1 standard this type of claim requires to reach Established.</span>
-          </div>
+        <div class="example-step">
+          <p class="example-q"><span class="step-n">Q1</span> What kind of proof is this?</p>
+          <p class="example-a">It's a research report - which sits low on the ladder, a <strong>pointer toward evidence, not evidence itself</strong>. The real question is what the report is built on. Commissioned studies usually rest on surveys or on usage data supplied by the company. Neither is something an outsider can re-test.</p>
         </div>
-
-        <div class="example-verdict">
-          <span class="band-pill band-dbt">Doubtful</span>
-          <span class="example-verdict-text">The claim rests on a single origin - the vendor - despite the appearance of independent research. The 40% figure carries false precision the methodology cannot support. This is not evidence of a 40% improvement; it is evidence that the vendor commissioned a study. Those are not the same thing.</span>
+        <div class="example-step">
+          <p class="example-q"><span class="step-n">Q2</span> Where does it come from?</p>
+          <p class="example-a">Follow it back: the study was <strong>paid for by the software company</strong>. The company set the brief, picked who took part, and supplied the underlying data. The trail doesn't lead to an independent source - it loops straight back to the seller.</p>
         </div>
+        <div class="example-step">
+          <p class="example-q"><span class="step-n">Q3</span> Do the sources really agree, or just repeat each other?</p>
+          <p class="example-a">There look like three sources here - the company, the report, and "Meridian." But they share the same data, the same paymaster, and the same interest in a good result. That's <strong>not three independent confirmations. It's one.</strong> And what else could explain a 40% figure? Maybe only the best teams were measured. Maybe people worked harder because they knew they were being watched. The study would need to rule those out - it almost certainly doesn't.</p>
+        </div>
+        <div class="example-step">
+          <p class="example-q"><span class="step-n">Q4</span> Who gains, and what's left out?</p>
+          <p class="example-a">The company gains directly from you believing the number - so it's an <strong>interested party making an assertion</strong> (Sign 03). And "40%" is suspiciously precise for this kind of research (Sign 07). We're shown the flattering figure; we're not shown the raw data, the teams that didn't improve, or how "productivity" was defined.</p>
+        </div>
+        <div class="example-step">
+          <p class="example-q"><span class="step-n">Q5</span> Has anyone serious tried to prove it wrong?</p>
+          <p class="example-a">No independent team has tested this, because the only study was controlled by the company. <strong>Nothing here has survived hostile scrutiny</strong> - it has simply never faced any.</p>
+        </div>
+      </div>
+      <div class="example-verdict">
+        <span class="band-pill band-dbt">Doubtful</span>
+        <p class="example-verdict-text">The claim looks like it has independent backing, but everything traces to a single interested source, and the precise figure isn't supported by anything an outsider can check. <strong>This isn't evidence that the software boosts productivity by 40%. It's evidence that the company paid for a study.</strong> Those are not the same thing. To believe the number, you'd want a genuinely independent test, with a comparison group, that someone else could repeat.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- AI PROMPT TOOL -->
-<section class="tool-section" id="ai-tool">
+<section class="tool-section" id="tool">
   <div class="wrap">
-    <p class="section-label">Section 06 - The Tool</p>
-    <h2 class="section-title">Check any claim now</h2>
-    <p class="section-sub">Copy this prompt and paste it into any AI assistant - Claude, ChatGPT, Gemini, or any other. Then add the source or claim you want to check at the bottom. The prompt applies the full framework: warrant hierarchy, provenance, independence, the mirror rule, the ten failure modes, and a five-band evidence rating. Use it on claims that support your view as readily as claims that challenge it.</p>
-
+    <p class="section-label">The tool</p>
+    <h2 class="section-title">Let an AI run the check for you</h2>
+    <p class="section-sub">You don't have to remember all of this. Copy the text below, paste it into any AI assistant - ChatGPT, Claude, Gemini, or another - then add the claim or source you want checked at the bottom. It runs all five questions and gives you a clear verdict. Use it on claims you agree with as readily as ones you don't.</p>
     <div class="prompt-box">
       <div class="pb-header">
-        <span class="pb-title">GROUNDTRUTH CLAIM VALIDATOR - UNIVERSAL PROMPT</span>
-        <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">Copy prompt</button>
+        <span class="pb-title">GROUNDTRUTH CLAIM CHECKER</span>
+        <button class="copy-btn" id="copyBtn" onclick="copyPrompt('copyBtn')">Copy</button>
       </div>
-      <div class="prompt-text" id="promptText">You are an evidence analyst applying a consistent, symmetrical standard to sources and claims. Your job is not to reach a preferred conclusion - it is to apply the same evidentiary rules regardless of which side of a debate the source or claim supports.
+      <div class="prompt-text" id="promptText">You are a careful, even-handed analyst helping me check whether a claim is well-supported. Your job is not to tell me what I want to hear. It is to apply the same fair test no matter which side the claim helps.
 
-THE GOVERNING PRINCIPLE - THE MIRROR RULE
+THE ONE RULE THAT GOVERNS EVERYTHING
+Apply the same standard to a claim I want to be true as to one I don't. At every step, ask: would I judge this the same way if it pointed to the opposite conclusion? If not, say so.
 
-Before any analysis: every evidentiary standard you apply to one party in a debate must be applied identically to all other parties. This means the source type standard, the warrant standard, and the independence test all apply symmetrically. Ask at each step: would I apply this standard to an equivalent claim on the other side? If no, adjust until yes. State your mirror rule check explicitly in the output.
+I will give you a claim or a source. Work through these five questions, then give me a clear verdict.
 
-I will give you either a source (website, article, organisation, document, or person making a claim), or a specific claim I want you to assess, with or without a source attached. Assess it using the framework below, then give me a structured output.
+QUESTION 1 - WHAT KIND OF PROOF IS THIS?
+Place the evidence on this ladder, strongest to weakest:
+- Something you can re-test (experiment, measurement)
+- Physical evidence (forensic results, dated imagery, authenticated documents)
+- A record made at the time (official records, transcripts, contracts)
+- A reasoned conclusion (worked out from solid evidence by clear logic)
+- Eyewitness accounts (useful but shaped by memory and motive)
+- Expert summaries and reporting (a pointer to evidence, not evidence itself)
+- Opinion or assertion (nothing independent underneath - not proof)
+Note: open or crowd-edited summary sites and blogs are not proof on their own. Trace them to the original source.
 
----
+QUESTION 2 - WHERE DOES IT COME FROM?
+Trace the claim back to its original source, not the outlet that repeated it. If many sources all trace back to one origin, that is one piece of evidence, not many. Say where the trail actually ends.
 
-STEP 1 - CLASSIFY THE CLAIM TYPE
+QUESTION 3 - DO THE SOURCES REALLY AGREE, OR JUST REPEAT EACH OTHER?
+Two sources only count as separate if they don't share the same origin, method, data, institution, or motive. Count only the genuinely independent ones. Then ask: what other explanations would fit this same evidence? If several fit equally well, the evidence doesn't prove any one of them.
 
-Identify the type of claim first. The type sets the ceiling on how confident you can ever be, regardless of how much evidence exists.
+QUESTION 4 - WHO GAINS, AND WHAT'S LEFT OUT?
+Is the claim made only by someone who benefits if I believe it? What evidence might be missing that would change the picture? Are equivalent facts on the other side being held to the same standard?
 
-- Existence / occurrence: something happened, something exists. Ceiling: Established (if evidence warrants it).
-- Quantity / magnitude: a number or scale claim. Ceiling: Established, if independently measured.
-- Attribution / reading: this source says this, this data shows this pattern. Ceiling: Probable.
-- Causal: X caused Y, the policy produced this outcome. Ceiling: Probable.
-- Intent / mental state: the decision was made in order to deceive / harm / mislead. Ceiling: Probable.
-- Evaluative / definitional: this constitutes fraud / negligence / misconduct / harm. Never scored as a whole - decompose into (a) what factually happened and (b) whether those facts meet the stated criteria of the term, with the definition on the table.
+QUESTION 5 - HAS ANYONE SERIOUS TRIED TO PROVE IT WRONG?
+Has this faced genuine, hostile scrutiny and survived - or has it simply never been tested?
 
----
+WATCH FOR THESE TEN WARNING SIGNS
+1. Repeating isn't proving - a claim that's everywhere but never shows original proof
+2. Many voices, one source - separate-looking sources all quoting the same thing
+3. Only the interested party says so - the sole source benefits from belief
+4. Borrowed authority - a body cited for something it never actually ruled on
+5. Out of date - rests on a source since corrected or replaced
+6. A number with no context - a real figure stripped of what gives it meaning
+7. Fake precision - exact-sounding numbers the data can't support
+8. Guessing the motive - claims about why, based only on the result
+9. One person treated as everyone - an individual's words made to speak for all
+10. Different rules for different sides - standards that shift with the answer
 
-STEP 2 - ASSESS THE WARRANT
+THEN GIVE ME A VERDICT, using one of these five honest levels:
+- Established: several independent lines of strong proof agree
+- Probable: more likely true than not, with some gaps
+- Contested: genuine evidence both ways, honestly unsettled
+- Doubtful: the weight of evidence points against it
+- Refuted: directly contradicted by strong evidence
 
-What kind of evidence does this claim ultimately rest on? Work down this hierarchy and identify where the claim's foundation actually sits.
+FORMAT YOUR ANSWER LIKE THIS
+- What kind of proof: [where it sits on the ladder]
+- Where it traces to: [the real original source, or a dead end]
+- Genuinely independent sources: [how many, after removing repeats]
+- Who gains / what's missing: [interests and gaps]
+- Tested by critics: [has it survived hostile scrutiny?]
+- Warning signs present: [any of the ten, named - or none]
+- Same-standard check: [would this judgment hold if it pointed the other way?]
+- VERDICT: [one of the five levels]
+- In plain words: [two or three sentences anyone can use]
 
-W1 - Repeatable observation: re-runnable experiments or measurements (scientific trials, radiocarbon dating, replicated studies). Strongest - anyone can re-run the test.
-W2 - Physical / forensic evidence: material records independent of any account (forensic analysis, satellite imagery, authenticated documents, physical data). Cannot be revised by an interested party.
-W3 - Contemporaneous record: documents created at the time by parties present (official records, contracts, contemporary reporting, transcripts). Stronger than later reconstructions.
-W4 - Reasoned inference from W1-W3: conclusions derived from hard evidence by stated logic. The reasoning must be explicit - not just the conclusion.
-W5 - Testimony: direct accounts from witnesses or participants. Valuable but filtered by memory and motive. Strongest when multiple accounts were collected independently and are mutually consistent.
-W6 - Secondary synthesis: expert analysis, journalism, NGO reports, think-tank papers. These are pointers toward primary evidence, not evidence themselves. Always ask: what primary evidence (W1-W3) does this rest on?
-W7 - Assertion / opinion: claims without independent evidential basis. Not evidence. Treat as a lead to investigate.
+One honest limit: this checks how well-supported a claim is, not every tiny fact. AI can get specific details wrong, so treat the verdict as a guide to confidence, not the last word. "Contested" doesn't mean both sides are equal - look at which has the stronger original proof.
 
-Hard rule: Wikipedia, unsigned encyclopaedia-style overviews, aggregator sites, and advocacy blogs are never cited as authority. They may be used only to locate the primary source beneath, which must then be verified directly.
-
----
-
-STEP 3 - CHECK PROVENANCE
-
-Follow the source upstream. Ask: if I trace this claim back through every outlet that has reported it, what is the original source? Does the chain reach a primary source (W1-W3), or does it dead-end at another secondary source, at an interested party, or at nothing?
-
-The pattern to watch for: a claim circulates across many outlets, each citing the previous one. Ten outlets reporting the same claim on the same day is one piece of evidence - the original - not ten. Volume of repetition is not evidence of truth.
-
----
-
-STEP 4 - TEST INDEPENDENCE
-
-Convergence of independent lines raises confidence. But independence must be demonstrated, not assumed. Two sources are only independent to the degree they do not share any of the following:
-
-1. Origin - same witness, document, or ultimate source
-2. Method - same technique, same blind spots
-3. Data - same underlying dataset
-4. Institution - same body, funder, or pipeline
-5. Motive - same incentive to reach this answer
-
-Dependent repetitions add nothing to evidential weight. Count only genuinely independent lines.
-
----
-
-STEP 5 - CHECK FOR NAMED FAILURE MODES
-
-Before rating the claim, check it against this list. If one applies, name it and explain why it matters for this specific claim.
-
-FM-01 Citation laundering: a claim passes through multiple outlets with no source ever citing primary evidence. Repetition creates the appearance of support that does not exist. Trace every source to its origin.
-
-FM-02 Single-origin amplification: multiple independent-seeming sources all trace back to the same single origin. The sources are real; the independence is not. Ten sources citing the same underlying report are one piece of evidence, not ten.
-
-FM-03 Interested-party assertion: a claim sourced exclusively to a party with a direct stake in the finding. The claim may be true but is not yet evidenced. Ask who benefits from this being believed.
-
-FM-04 Mandate creep: a body cited for conclusions outside its actual mandate. A case being heard is not a verdict. A vote in a committee is evidence of the vote, not of the underlying facts. Check what the cited body was actually asked to decide.
-
-FM-05 Retracted or superseded source: the source has since been corrected or superseded by better evidence but continues to circulate. Check whether this is the most recent available finding.
-
-FM-06 Decontextualised statistic: a real number cited without the context that gives it meaning - without comparison to baselines, without methodological notes, without the range around it. The number may be accurate; the claim built on it may not be.
-
-FM-07 False precision: a claim stated with numerical specificity that the underlying data does not support. A single figure cited from a source that itself gives a range or uncertainty interval. Check whether the precision has been silently invented.
-
-FM-08 Motive attribution without evidence: intent claimed from outcome alone, without documented orders, statements, or systematic patterns of behaviour. Intent is a separate factual question from outcome and requires its own direct evidence.
-
-FM-09 Isolated quote: one individual's statement cited as representing the policy or intent of an entire organisation, company, or institution. Ask whether the quote reflects documented official policy or is an individual statement by someone without authority to set policy.
-
-FM-10 Asymmetric application: different evidentiary standards applied to different parties in the same debate. Sources accepted for one side are rejected for the other using different criteria. Apply the mirror rule.
-
----
-
-STEP 6 - RATE THE CLAIM
-
-Use this five-band scale, anchored to intelligence community estimative probability standards and legal standards of proof:
-
-Established (95-99%+): Multiple genuinely independent lines of primary evidence (W1-W3) converge. The current state of the field. Equivalent to "beyond reasonable doubt." Note: causal, intent, and evaluative claims cannot reach this band regardless of evidence.
-
-Probable (70-95%): More likely true than not. Credible sourcing with minor gaps or some contrary evidence. Equivalent to "clear and convincing."
-
-Contested (30-70%): Credible evidence and argument exist on both sides. Genuinely uncertain. "Contested" does not mean both sides are equally supported - look at which side has the stronger primary sourcing.
-
-Doubtful (5-30%): The weight of evidence points against it. Relies on interested-secondary sources, fails the provenance test, or primary sources do not support it. Fails the civil standard.
-
-Refuted (<5%): Directly contradicted by primary sources or physical evidence. The claim is positively disproved, not merely unproven.
-
-Also state evidential weight: Heavy (many independent lines; hard to move), Moderate (some independent lines; a new study could shift it), or Light (thin sourcing; one document could change everything).
-
----
-
-OUTPUT FORMAT
-
-Claim type: [category from Step 1, and the ceiling this implies]
-Warrant level: [W1-W7 - what the claim ultimately rests on]
-Provenance: [does it trace to a primary source, or does the chain dead-end?]
-Independent lines: [how many genuinely independent lines support it, tested against the five dimensions]
-Mirror rule: [explicitly state whether the same standard would apply to an equivalent claim on the other side]
-Failure mode identified: [name from FM-01 to FM-10, or "none identified" - with plain-English explanation]
-Evidence rating: [Established / Probable / Contested / Doubtful / Refuted]
-Evidential weight: [Heavy / Moderate / Light]
-What would actually establish this: [what primary source or evidence type would settle the question]
-Plain-English verdict: [two to three sentences a non-expert can use]
-
----
-
-IMPORTANT LIMITS
-
-This checks source reliability and whether a claim is well-supported. It cannot guarantee every factual detail is accurate - AI systems make errors on specific facts. "Interested-secondary" does not mean wrong - it means verify against primary sources before treating as settled. "Contested" does not mean both sides are equally supported - look at which side has the stronger primary evidence. A claim being widely believed is not evidence it is true.
-
----
-
-Now paste the source or claim you want checked:</div>
-      <button class="copy-btn-bottom" id="copyBtn2" onclick="copyPrompt('copyBtn2')">Copy prompt to clipboard</button>
-      <div class="prompt-instructions">Paste into Claude, ChatGPT, Gemini, or any other AI assistant. Add your source or claim at the bottom. Works on any topic - climate, economics, health, business, politics, or news.</div>
+Now here is the claim or source I want checked:</div>
+      <button class="copy-btn-bottom" id="copyBtn2" onclick="copyPrompt('copyBtn2')">Copy the checker to your clipboard</button>
+      <div class="prompt-note">Works in any AI assistant. Paste it in, add your claim at the bottom, and send. Good for any topic - news, health, business, politics, science, or something a friend swears is true.</div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="wrap">
     <div class="footer-inner">
       <div>
-        <a href="#" class="wordmark" style="display:inline-block;margin-bottom:10px;">Ground<span>Truth</span></a>
-        <p class="footer-note">An open framework for evaluating claims. No affiliation with any political party, government, advocacy organisation, or news outlet. The framework applies the same standard to all sources regardless of which conclusion they support.</p>
+        <a href="#" class="wordmark" style="display:inline-block;margin-bottom:12px;">Ground<span>Truth</span></a>
+        <p class="footer-note">A free, open method for checking whether a claim is true. It belongs to no party, company, or cause, and it applies the same test to every claim regardless of which side benefits.</p>
         <p class="footer-note" style="margin-top:10px;">
           <a href="https://github.com/Ground-Truth-Git/ground-truth" target="_blank" rel="noopener">View source on GitHub</a>
-          &nbsp;&middot;&nbsp;
-          Framework v1.1 - June 2026
+          &nbsp;&middot;&nbsp; <a href="technical.html">Technical version</a>
+          &nbsp;&middot;&nbsp; Version 2.0 &middot; June 2026
         </p>
       </div>
-      <p class="footer-note" style="text-align:right;max-width:28ch;">Every claim on this site is held to the standard it describes. Check us against our own framework.</p>
+      <p class="footer-note" style="text-align:right;max-width:30ch;">This site is held to its own standard. Check it against its own five questions.</p>
     </div>
   </div>
 </footer>
 
 <script>
   function copyPrompt(btnId) {
-    const btn = document.getElementById(btnId || 'copyBtn');
     const text = document.getElementById('promptText').innerText;
-    const setBtn = (label, cls) => {
-      btn.textContent = label;
-      if (cls) btn.classList.add(cls);
-      else btn.classList.remove('copied');
+    const reset = () => {
+      const b1 = document.getElementById('copyBtn');
+      const b2 = document.getElementById('copyBtn2');
+      if (b1) { b1.textContent = 'Copy'; b1.classList.remove('copied'); }
+      if (b2) { b2.textContent = 'Copy the checker to your clipboard'; b2.classList.remove('copied'); }
+    };
+    const mark = () => {
+      const b1 = document.getElementById('copyBtn');
+      const b2 = document.getElementById('copyBtn2');
+      if (b1) { b1.textContent = 'Copied!'; b1.classList.add('copied'); }
+      if (b2) { b2.textContent = 'Copied!'; b2.classList.add('copied'); }
     };
     navigator.clipboard.writeText(text).then(() => {
-      setBtn('Copied!', 'copied');
-      // Also update the other button if visible
-      ['copyBtn','copyBtn2'].forEach(id => {
-        if (id !== (btnId || 'copyBtn')) {
-          const other = document.getElementById(id);
-          if (other) { other.textContent = 'Copied!'; other.classList.add('copied'); }
-        }
-      });
-      setTimeout(() => {
-        document.getElementById('copyBtn').textContent = 'Copy prompt';
-        document.getElementById('copyBtn').classList.remove('copied');
-        document.getElementById('copyBtn2').textContent = 'Copy prompt to clipboard';
-        document.getElementById('copyBtn2').classList.remove('copied');
-      }, 2000);
+      mark(); setTimeout(reset, 2000);
     }).catch(() => {
       const el = document.getElementById('promptText');
       const range = document.createRange();
@@ -1463,13 +602,7 @@ Now paste the source or claim you want checked:</div>
       window.getSelection().addRange(range);
       document.execCommand('copy');
       window.getSelection().removeAllRanges();
-      setBtn('Copied!', 'copied');
-      setTimeout(() => {
-        document.getElementById('copyBtn').textContent = 'Copy prompt';
-        document.getElementById('copyBtn').classList.remove('copied');
-        document.getElementById('copyBtn2').textContent = 'Copy prompt to clipboard';
-        document.getElementById('copyBtn2').classList.remove('copied');
-      }, 2000);
+      mark(); setTimeout(reset, 2000);
     });
   }
 </script>
