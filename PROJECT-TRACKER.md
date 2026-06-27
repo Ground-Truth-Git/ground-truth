@@ -1,63 +1,63 @@
 # GroundTruth - Project Tracker
 
 ## Status
-Build session 1 complete. Site at launch-candidate status for initial review.
+Session 3 complete. Site substantially complete. Netlify auto-deploy live at https://idyllic-praline-d12c63.netlify.app/
 
 ## Decisions locked
 
 - Site name: **GroundTruth** (styled as one word, capital G and T)
 - Hosting: Netlify free subdomain (no custom domain yet)
-- GitHub: NEW anonymous account - Josh to create manually (new email first)
-- Visual language: dark navy (#0A0F1E), sans-serif led (Inter + DM Serif Display), monospaced diagnostic codes (JetBrains Mono) - fully distinct from theMap
+- GitHub: https://github.com/Ground-Truth-Git/ground-truth (public, real identity)
+- Visual language: dark navy (#0A0F1E), Inter + DM Serif Display + JetBrains Mono
 - Author presence: none on site - framework speaks for itself
 - Homepage lead: ten failure modes with FM-01 through FM-10 diagnostic codes
-- Secondary CTA: AI prompt tool
 - LinkedIn post angle: civic/democracy problem
-- No connection to theMap in any direction - different hosting, GitHub, email, visual language
+- Framework version: v1.1
+
+## Section order (locked)
+01 - Failure modes
+02 - Warrant, provenance, and independence
+03 - Evidence rating + mirror rule
+04 - Five-question test
+05 - Worked example (vendor commissioned research)
+06 - AI prompt tool
 
 ## Files
-
 - `index.html` - complete single-page site
 - `netlify.toml` - redirect config
-- `LINKEDIN-POST.md` - draft post, do not publish until domain confirmed
+- `LINKEDIN-POST.md` - draft post, needs real URL confirmed before posting
 
-## Setup steps still needed (Josh to do manually)
+## Open GitHub issues (remaining)
+- #2, #4, #6 - duplicates/gaps from issue creation (not real issues)
+- #11 - Move five-question test higher as 30-second anchor (structure - medium priority)
+- #12 - Add origin/why section for credibility (content - needs Josh input)
+- #19 - Hero headline reframe (needs Josh decision)
 
-1. Create new ProtonMail (or similar) - no connection to existing accounts
-2. Create new GitHub account using that email
-3. Create new repo (suggested name: `groundtruth-site` or `evframework`)
-4. Run these commands from /home/claude/evframework/ (with new GitHub credentials):
-   ```
-   git init
-   git add .
-   git commit -m "Initial build"
-   git branch -M main
-   git remote add origin https://github.com/NEWACCOUNT/NEWREPO.git
-   git push -u origin main
-   ```
-5. Connect new GitHub repo to Netlify (netlify.com > New site from Git)
-6. Note the actual subdomain Netlify assigns
-7. Update LINKEDIN-POST.md with real URL before posting
-
-## Content decisions locked
-
-- Ten failure modes: FM-01 through FM-10 with diagnostic code styling
-- Five-band rating with credence intervals (anchored to intel community + legal standards)
-- Mirror rule: full text on site
-- Eight source categories
-- Universal AI prompt (rewritten from source, topic-neutral, no conflict references)
+## Completed this session (13 issues closed)
+- #1 Rival hypotheses section added
+- #3 Assembly check added
+- #5 Weakest-link principle added
+- #7 Silence sub-rule added
+- #8 Worked example added (vendor commissioned research)
+- #9 FM-03 language fixed (removed "military")
+- #10 Section reorder - warrant now before evidence rating
+- #13 Mirror rule moved to top of AI prompt as governing principle
+- #14 GitHub link added to footer
+- #15 Version v1.1 + date added to footer
+- #16 FM card "how to spot it" contrast fixed
+- #17 Second full-width copy button added below prompt
+- #18 Dead source-grid CSS removed
 
 ## Standing rules
-
 - Plain hyphens only, no em dashes
 - No Wikipedia sourcing
 - No connection to theMap - not in code, not in prose, not in git history
 - Mobile-first throughout
 - Proactively critique all public moves before Josh acts
 
-## Outstanding
-
-- Josh to review site visually and confirm design direction
-- Confirm Netlify subdomain
-- Final check: nothing in HTML source that fingerprints theMap authorship
-- LinkedIn post timing decision (suggest Tue/Wed morning Melbourne)
+## Awaiting Josh input
+- #12 - "Why I built this" origin section - needs Josh's own framing
+- #19 - Hero headline - current headline stays until Josh decides otherwise
+- #11 - Five-question test position - structural judgment call
+- LinkedIn post - holds until custom domain decision and Josh review of live site
+- Custom domain decision - currently on free Netlify subdomain
