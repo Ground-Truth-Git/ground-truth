@@ -460,6 +460,212 @@
       line-height: 1.5;
     }
 
+    /* === WARRANT HIERARCHY === */
+    .warrant-list {
+      margin-top: 8px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .warrant-item {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      align-items: stretch;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card);
+      transition: background 0.15s;
+    }
+
+    .warrant-item:last-child { border-bottom: none; }
+    .warrant-item:hover { background: var(--bg-card-2); }
+
+    .warrant-num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border-right: 1px solid var(--border);
+      padding: 16px 0;
+    }
+
+    .w-strongest { color: var(--green); }
+    .w-strong    { color: #6ee7b7; }
+    .w-good      { color: var(--blue); }
+    .w-inferred  { color: #93c5fd; }
+    .w-testimony { color: var(--amber); }
+    .w-secondary { color: #fb923c; }
+    .w-assertion { color: var(--red); }
+
+    .warrant-body {
+      padding: 14px 20px;
+    }
+
+    .warrant-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .warrant-desc {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    /* === CLAIM TYPE TABLE === */
+    .claim-types {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    .claim-types th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 0 16px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-2);
+    }
+
+    .claim-types th:first-child { padding-left: 0; }
+
+    .claim-types td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      font-size: 0.875rem;
+    }
+
+    .claim-types td:first-child { padding-left: 0; font-weight: 600; }
+    .claim-types tr:last-child td { border-bottom: none; }
+
+    .claim-types td.ct-example { color: var(--text-soft); font-size: 0.82rem; }
+
+    .ceiling-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .ceil-est  { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .ceil-prob { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+    .ceil-none { background: rgba(239, 68, 68, 0.10); color: #f87171; font-size: 0.62rem; }
+
+    /* === FIVE QUESTIONS === */
+    .five-q {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .fq-item {
+      background: var(--bg-card);
+      padding: 18px 24px;
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 16px;
+      align-items: start;
+      transition: background 0.15s;
+    }
+
+    .fq-item:hover { background: var(--bg-card-2); }
+
+    .fq-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--blue);
+      padding-top: 2px;
+    }
+
+    .fq-q {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .fq-maps {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+    }
+
+    /* === CALLOUT BOX === */
+    .callout-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-2);
+      border-left: 3px solid var(--amber);
+      border-radius: 0 8px 8px 0;
+      padding: 20px 24px;
+      margin-top: 32px;
+      font-size: 0.875rem;
+      color: var(--text-soft);
+      line-height: 1.65;
+    }
+
+    .callout-box strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* === INDEP DIMENSIONS === */
+    .indep-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .indep-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+
+    .indep-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--blue);
+      margin-bottom: 6px;
+    }
+
+    .indep-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .indep-desc {
+      font-size: 0.72rem;
+      color: var(--text-soft);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 680px) {
+      .indep-grid { grid-template-columns: repeat(3, 1fr); }
+      .claim-types { font-size: 0.8rem; }
+      .warrant-num { font-size: 0.8rem; }
+    }
+
     /* === FOOTER === */
     footer {
       padding: 48px 0;
@@ -528,7 +734,8 @@
       <ul class="nav-links">
         <li><a href="#failure-modes">Failure Modes</a></li>
         <li><a href="#evidence-rating">Evidence Rating</a></li>
-        <li><a href="#mirror-rule">Mirror Rule</a></li>
+        <li><a href="#warrant">Warrant &amp; Provenance</a></li>
+        <li><a href="#five-questions">Five Questions</a></li>
         <li><a href="#ai-tool">AI Tool</a></li>
       </ul>
     </div>
@@ -675,68 +882,219 @@
       </tbody>
     </table>
 
-    <div class="mirror-rule" id="mirror-rule" style="margin-top:56px;">
-      <p class="mr-label">The Mirror Rule</p>
-      <p>Every evidentiary standard applied to one party in a dispute must be applied identically to all other parties.</p>
-      <p>If you would dismiss a source as government-affiliated, apply the same scrutiny to every government with a stake in the question. If you would accept an NGO report on one side, apply the same acceptance threshold to NGO reports on the other. The test: would you apply this standard if it supported the opposite conclusion? If the answer is no, adjust until it is yes.</p>
+    <div class="callout-box" style="border-left-color:var(--blue); margin-top:32px;">
+      <strong>Evidential weight is separate from the band.</strong> Two claims can both sit at 50% confidence for opposite reasons - one finely balanced between two strong bodies of evidence, the other resting on almost nothing. The band tells you the current probability. The weight (heavy / moderate / light) tells you how far one new piece of evidence could move it. A light-weight claim at 50% could swing to 90% or 10% with a single document. A heavy-weight claim at 95% would need an extraordinary new finding to shift. Always ask both: what is the rating, and how much is it standing on?
+    </div>
+
+    <div class="callout-box" style="margin-top:16px;">
+      <strong>Three permanent rules about confidence numbers.</strong> Never 0, never 100 - certainty is not on offer. Resolution is bounded - credences are stated in ranges, not precise points, because finer precision cannot be derived from most evidence and claiming it is itself a failure mode (FM-07, false precision). A confidence interval is a disciplined, auditable belief - not a measurement.
     </div>
   </div>
 </section>
 
-<!-- SOURCE CATEGORIES -->
-<section class="section" id="source-categories">
+<!-- WARRANT & PROVENANCE -->
+<section class="section" id="warrant">
   <div class="wrap">
     <p class="section-label">Section 03</p>
-    <h2 class="section-title">Source reliability categories</h2>
-    <p class="section-sub">Not all sources are equal. The category tells you how much independent verification is needed before treating a claim as established.</p>
+    <h2 class="section-title">Warrant, provenance, and independence</h2>
+    <p class="section-sub">A claim is a chain from evidence to conclusion. Before asking whether a claim is true, ask what kind of evidence it rests on, whether that evidence survives being traced to its origin, and how many genuinely independent lines agree. Each question can collapse a claim that looked solid.</p>
 
-    <div class="source-grid">
-      <div class="source-card">
-        <p class="source-tier tier-primary">Primary</p>
-        <p class="source-name">Court judgments, legal texts, official records</p>
-        <p class="source-desc">Documents created at the time by parties with direct knowledge. The strongest category - but read what the document actually says, not what someone says it says (see: Mandate Creep).</p>
+    <h3 style="font-family:'DM Serif Display',serif;font-size:1.25rem;margin-bottom:16px;margin-top:0;color:var(--text);">The warrant hierarchy - what kind of evidence is this?</h3>
+    <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:20px;max-width:62ch;">The type of evidence sets the ceiling on how confident you can be. A claim can only be as strong as the evidence it stands on. Higher warrant types are harder to fabricate and harder for interested parties to revise.</p>
+
+    <div class="warrant-list">
+      <div class="warrant-item">
+        <div class="warrant-num w-strongest">1</div>
+        <div class="warrant-body">
+          <p class="warrant-name">Repeatable observation</p>
+          <p class="warrant-desc">Re-runnable experiments and measurements - radiocarbon dating, clinical trials with replication, established physics. The strongest because anyone can re-run the test and get the same result.</p>
+        </div>
       </div>
-
-      <div class="source-card">
-        <p class="source-tier tier-primary">Primary</p>
-        <p class="source-name">Forensic and physical evidence</p>
-        <p class="source-desc">Archaeological findings, satellite imagery, scientific measurements, material records. Cannot be revised by a party with an interest in the outcome.</p>
+      <div class="warrant-item">
+        <div class="warrant-num w-strong">2</div>
+        <div class="warrant-body">
+          <p class="warrant-name">Physical and forensic evidence</p>
+          <p class="warrant-desc">Material records that exist independently of any account - forensic analysis, satellite imagery, archaeological findings, authenticated documents, DNA. Cannot be revised by a party with an interest in the outcome.</p>
+        </div>
       </div>
-
-      <div class="source-card">
-        <p class="source-tier tier-reviewed">Peer-reviewed</p>
-        <p class="source-name">Peer-reviewed academic</p>
-        <p class="source-desc">Published in a journal with independent expert review. Check whether findings have been replicated and whether the journal is in the field's mainstream.</p>
+      <div class="warrant-item">
+        <div class="warrant-num w-good">3</div>
+        <div class="warrant-body">
+          <p class="warrant-name">Contemporaneous record</p>
+          <p class="warrant-desc">Official documents, registers, and records created at the time of the events by parties present - contracts, censuses, court transcripts, contemporaneous news reports. Stronger than later reconstructions.</p>
+        </div>
       </div>
-
-      <div class="source-card">
-        <p class="source-tier tier-reviewed">Credible</p>
-        <p class="source-name">Major independent newswire</p>
-        <p class="source-desc">AP, Reuters, BBC, AFP reporting (not opinion). Aim for factual coverage. These are pointers to primary sources, not primary sources themselves.</p>
+      <div class="warrant-item">
+        <div class="warrant-num w-inferred">4</div>
+        <div class="warrant-body">
+          <p class="warrant-name">Reasoned inference from 1-3</p>
+          <p class="warrant-desc">Conclusions derived from hard evidence by stated logic. Valid when the logic is explicit and the underlying evidence is strong - but the inference itself adds uncertainty. The reasoning must be shown, not just the conclusion.</p>
+        </div>
       </div>
-
-      <div class="source-card">
-        <p class="source-tier tier-secondary">Interested-secondary</p>
-        <p class="source-name">NGOs and advocacy organisations</p>
-        <p class="source-desc">Bodies with stated positions or structural interests. Label the interest, not just the category. Verify their claims against primary sources. Apply this standard to all advocacy groups equally, regardless of which conclusion they support.</p>
+      <div class="warrant-item">
+        <div class="warrant-num w-testimony">5</div>
+        <div class="warrant-body">
+          <p class="warrant-name">Testimony and confession</p>
+          <p class="warrant-desc">Direct accounts from witnesses or participants. Valuable but filtered by memory, motive, and sometimes coercion. Strongest when multiple accounts were collected separately and are mutually consistent without coordination.</p>
+        </div>
       </div>
-
-      <div class="source-card">
-        <p class="source-tier tier-secondary">Interested-secondary</p>
-        <p class="source-name">Governments and state agencies</p>
-        <p class="source-desc">Any government with a stake in the finding is an interested party. Apply this equally to all governments. A government is authoritative on its own stated positions - not on contested facts.</p>
+      <div class="warrant-item">
+        <div class="warrant-num w-secondary">6</div>
+        <div class="warrant-body">
+          <p class="warrant-name">Secondary synthesis</p>
+          <p class="warrant-desc">Expert analysis, investigative journalism, NGO reports. These are pointers toward primary evidence - not evidence themselves. Their only legitimate function is to lead you to a primary source. Always ask: what primary evidence does this rest on?</p>
+        </div>
       </div>
-
-      <div class="source-card">
-        <p class="source-tier tier-secondary">Interested-secondary</p>
-        <p class="source-name">Think tanks and policy institutes</p>
-        <p class="source-desc">Policy institutes with known political or ideological orientations. Their analysis may be rigorous; their framing and topic selection is shaped by their position. Name the orientation.</p>
+      <div class="warrant-item">
+        <div class="warrant-num w-assertion">7</div>
+        <div class="warrant-body">
+          <p class="warrant-name">Assertion and opinion</p>
+          <p class="warrant-desc">Claims without independent evidential basis. Includes social media posts, unattributed statements, and claims by interested parties that cannot be traced to any primary source. Not evidence. Treat as a lead to investigate, not a fact to cite.</p>
+        </div>
       </div>
+    </div>
 
-      <div class="source-card">
-        <p class="source-tier tier-unverified">Unverified</p>
-        <p class="source-name">Social media, anonymous, unattributed</p>
-        <p class="source-desc">Viral posts, unattributed claims, unknown origin. These are leads to investigate, not evidence. Never cite as authority. Treat with proportional scepticism regardless of which side they support.</p>
+    <div class="callout-box" style="border-left-color: var(--red); margin-top: 28px;">
+      <strong>Hard rule on tertiary sources:</strong> Wikipedia, unsigned encyclopaedia-style overviews, aggregator sites, and advocacy blogs are never cited as authority. On contested topics they fail provenance, independence, and robustness at once - editable by interested parties, and typically one or two steps removed from whatever they summarise. Use them only as a finding aid to locate the primary source beneath, which is then verified and cited directly. A claim that cannot be re-grounded below the tertiary layer is unanchored.
+    </div>
+
+    <h3 style="font-family:'DM Serif Display',serif;font-size:1.25rem;margin:48px 0 16px;color:var(--text);">Provenance - does it survive being traced to its origin?</h3>
+    <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:16px;max-width:62ch;">Follow any source upstream. If it collapses onto a single, discredited, or fabricated origin, the credence collapses with it - regardless of how many outlets repeated it downstream. The pattern: thousands of citations, one retracted study underneath. Volume of repetition is not evidence of truth.</p>
+
+    <div class="callout-box" style="border-left-color: var(--amber);">
+      <strong>The provenance habit:</strong> before being impressed by how many sources say something, ask what they are all ultimately citing. If ten news outlets all reported the same claim on the same day, that is one piece of evidence - the original source - not ten. Trace it before trusting it.
+    </div>
+
+    <h3 style="font-family:'DM Serif Display',serif;font-size:1.25rem;margin:48px 0 12px;color:var(--text);">Independence - how many genuinely separate lines agree?</h3>
+    <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:20px;max-width:62ch;">Convergence of independent lines is what raises confidence. But independence must be demonstrated, not assumed. Two sources are only independent to the degree they share none of the following. If they share any of these, dependent repetitions add nothing to the evidential weight.</p>
+
+    <div class="indep-grid">
+      <div class="indep-card">
+        <p class="indep-num">1</p>
+        <p class="indep-label">Origin</p>
+        <p class="indep-desc">Same witness, document, or ultimate source</p>
+      </div>
+      <div class="indep-card">
+        <p class="indep-num">2</p>
+        <p class="indep-label">Method</p>
+        <p class="indep-desc">Same technique, same blind spots</p>
+      </div>
+      <div class="indep-card">
+        <p class="indep-num">3</p>
+        <p class="indep-label">Data</p>
+        <p class="indep-desc">Same underlying dataset</p>
+      </div>
+      <div class="indep-card">
+        <p class="indep-num">4</p>
+        <p class="indep-label">Institution</p>
+        <p class="indep-desc">Same body, funder, or pipeline</p>
+      </div>
+      <div class="indep-card">
+        <p class="indep-num">5</p>
+        <p class="indep-label">Motive</p>
+        <p class="indep-desc">Same incentive to reach the answer</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:'DM Serif Display',serif;font-size:1.25rem;margin:48px 0 16px;color:var(--text);">Claim type caps the ceiling</h3>
+    <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:20px;max-width:62ch;">Not all claims can be equally well established, regardless of how much evidence exists. The type of claim fixes the highest band it can reach - because no quantity of evidence turns an interpretation into an observation. Identify the claim type before assessing the evidence.</p>
+
+    <table class="claim-types">
+      <thead>
+        <tr>
+          <th>Claim type</th>
+          <th>Example</th>
+          <th>Ceiling</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Existence / occurrence</td>
+          <td class="ct-example">An event happened; a company made a product</td>
+          <td><span class="ceiling-pill ceil-est">Established</span></td>
+        </tr>
+        <tr>
+          <td>Quantity / magnitude</td>
+          <td class="ct-example">Roughly N cases occurred; market size is $X</td>
+          <td><span class="ceiling-pill ceil-est">Established</span> if independently measured</td>
+        </tr>
+        <tr>
+          <td>Attribution</td>
+          <td class="ct-example">This data shows this pattern; this document says this</td>
+          <td><span class="ceiling-pill ceil-prob">Probable</span></td>
+        </tr>
+        <tr>
+          <td>Causal</td>
+          <td class="ct-example">X caused Y; the policy produced this outcome</td>
+          <td><span class="ceiling-pill ceil-prob">Probable</span></td>
+        </tr>
+        <tr>
+          <td>Intent / mental state</td>
+          <td class="ct-example">The decision was made in order to deceive</td>
+          <td><span class="ceiling-pill ceil-prob">Probable</span></td>
+        </tr>
+        <tr>
+          <td>Evaluative / definitional</td>
+          <td class="ct-example">This constitutes fraud / negligence / misconduct</td>
+          <td><span class="ceiling-pill ceil-none">Never scored whole - decompose first</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout-box" style="margin-top: 24px;">
+      <strong>On evaluative claims:</strong> a loaded label ("fraud", "negligence", "misconduct", "misleading") must be split into two questions - what factually happened (scored normally against evidence) and whether those facts meet the stated criteria of the term (argued openly, with the definition on the table). This stops a contested label from borrowing certainty from the facts beneath it.
+    </div>
+
+    <div class="mirror-rule" id="mirror-rule" style="margin-top:48px;">
+      <p class="mr-label">The Mirror Rule</p>
+      <p>Every evidentiary standard applied to one party in a dispute must be applied identically to all other parties.</p>
+      <p>If you would dismiss a source as commercially interested, apply the same scrutiny to sources with the opposite commercial interest. If you would accept an NGO report on one side, apply the same acceptance threshold to NGO reports on the other. The test: would you apply this standard if it supported the opposite conclusion? If the answer is no, adjust until it is yes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FIVE QUESTIONS -->
+<section class="section" id="five-questions">
+  <div class="wrap">
+    <p class="section-label">Section 04</p>
+    <h2 class="section-title">The five-question test</h2>
+    <p class="section-sub">A reader who never opens the full machinery can run the entire framework with five questions. If only one habit survives, make it question 2 - ask where a claim traces back to before being impressed by how many places you've seen it.</p>
+
+    <div class="five-q">
+      <div class="fq-item">
+        <div class="fq-num">1</div>
+        <div>
+          <p class="fq-q">What kind of claim is this, and what is it ultimately based on?</p>
+          <p class="fq-maps">Maps to: Claim type + Warrant hierarchy</p>
+        </div>
+      </div>
+      <div class="fq-item">
+        <div class="fq-num">2</div>
+        <div>
+          <p class="fq-q">Where does it trace back to?</p>
+          <p class="fq-maps">Maps to: Provenance - follow upstream until you hit a primary source or a dead end</p>
+        </div>
+      </div>
+      <div class="fq-item">
+        <div class="fq-num">3</div>
+        <div>
+          <p class="fq-q">How many genuinely independent lines say it - and what else could explain the evidence?</p>
+          <p class="fq-maps">Maps to: Independence (five dimensions) + rival hypotheses</p>
+        </div>
+      </div>
+      <div class="fq-item">
+        <div class="fq-num">4</div>
+        <div>
+          <p class="fq-q">Who benefits if I believe this, and what is being left out?</p>
+          <p class="fq-maps">Maps to: Interest + assembly check (is the evidence representative, or a selected slice?)</p>
+        </div>
+      </div>
+      <div class="fq-item">
+        <div class="fq-num">5</div>
+        <div>
+          <p class="fq-q">Has anyone serious tried to disprove this and failed?</p>
+          <p class="fq-maps">Maps to: Robustness / evidential weight - surviving hostile scrutiny is what locks confidence in</p>
+        </div>
       </div>
     </div>
   </div>
@@ -745,9 +1103,9 @@
 <!-- AI PROMPT TOOL -->
 <section class="tool-section" id="ai-tool">
   <div class="wrap">
-    <p class="section-label">Section 04 - The Tool</p>
+    <p class="section-label">Section 05 - The Tool</p>
     <h2 class="section-title">Check any claim now</h2>
-    <p class="section-sub">Copy this prompt and paste it into any AI assistant - Claude, ChatGPT, Gemini, or any other. Then add the source or claim you want to check at the bottom. The prompt applies everything on this page: source classification, the mirror rule, the ten failure modes, and a five-band evidence rating. Use it on claims that support your view as readily as claims that challenge it.</p>
+    <p class="section-sub">Copy this prompt and paste it into any AI assistant - Claude, ChatGPT, Gemini, or any other. Then add the source or claim you want to check at the bottom. The prompt applies the full framework: warrant hierarchy, provenance, independence, the mirror rule, the ten failure modes, and a five-band evidence rating. Use it on claims that support your view as readily as claims that challenge it.</p>
 
     <div class="prompt-box">
       <div class="pb-header">
@@ -758,87 +1116,132 @@
 
 I will give you either a source (website, article, organisation, document, or person making a claim), or a specific claim I want you to assess, with or without a source attached. Assess it using the framework below, then give me a structured output.
 
-STEP 1 - CLASSIFY THE SOURCE
+---
 
-Use one of these categories:
+STEP 1 - CLASSIFY THE CLAIM TYPE
 
-- Primary: court judgment, legal text, treaty, or official record
-- Primary: forensic or physical evidence (satellite imagery, archaeological finding, scientific measurement)
-- Primary: contemporaneous document (created at the time by parties present)
-- Peer-reviewed academic: published with independent expert review
-- Academic / scholarly: credentialled expert, not peer-reviewed
-- Major independent newswire: AP, Reuters, BBC, AFP factual reporting (not opinion)
-- Independent monitoring body: non-partisan observer with no stake in the finding
-- Interested-secondary (NGO): advocacy organisation with a stated position
-- Interested-secondary (think tank): policy institute with a known orientation
-- Interested-secondary (government): any government with a stake in the finding
-- Interested-secondary (advocacy media): publication with a known editorial line
-- Unverified / anonymous: social media, unattributed, unknown origin
+Identify the type of claim first. The type sets the ceiling on how confident you can ever be, regardless of how much evidence exists.
 
-STEP 2 - APPLY THE MIRROR RULE
+- Existence / occurrence: something happened, something exists. Ceiling: Established (if evidence warrants it).
+- Quantity / magnitude: a number or scale claim. Ceiling: Established, if independently measured.
+- Attribution / reading: this source says this, this data shows this pattern. Ceiling: Probable.
+- Causal: X caused Y, the policy produced this outcome. Ceiling: Probable.
+- Intent / mental state: the decision was made in order to deceive / harm / mislead. Ceiling: Probable.
+- Evaluative / definitional: this constitutes fraud / negligence / misconduct / harm. Never scored as a whole - decompose into (a) what factually happened and (b) whether those facts meet the stated criteria of the term, with the definition on the table.
 
-Ask: would I apply the same level of scrutiny to an equivalent source on the opposite side of this debate? State your answer explicitly. If the answer is no, adjust until it is yes.
+---
 
-STEP 3 - CHECK FOR NAMED FAILURE MODES
+STEP 2 - ASSESS THE WARRANT
 
-Before rating the claim, check it against this list. If one applies, name it and explain why it matters.
+What kind of evidence does this claim ultimately rest on? Work down this hierarchy and identify where the claim's foundation actually sits.
 
-FM-01 Citation laundering: a claim passes through multiple outlets with no source ever citing primary evidence. Repetition creates the appearance of support that does not exist.
+W1 - Repeatable observation: re-runnable experiments or measurements (scientific trials, radiocarbon dating, replicated studies). Strongest - anyone can re-run the test.
+W2 - Physical / forensic evidence: material records independent of any account (forensic analysis, satellite imagery, authenticated documents, physical data). Cannot be revised by an interested party.
+W3 - Contemporaneous record: documents created at the time by parties present (official records, contracts, contemporary reporting, transcripts). Stronger than later reconstructions.
+W4 - Reasoned inference from W1-W3: conclusions derived from hard evidence by stated logic. The reasoning must be explicit - not just the conclusion.
+W5 - Testimony: direct accounts from witnesses or participants. Valuable but filtered by memory and motive. Strongest when multiple accounts were collected independently and are mutually consistent.
+W6 - Secondary synthesis: expert analysis, journalism, NGO reports, think-tank papers. These are pointers toward primary evidence, not evidence themselves. Always ask: what primary evidence (W1-W3) does this rest on?
+W7 - Assertion / opinion: claims without independent evidential basis. Not evidence. Treat as a lead to investigate.
 
-FM-02 Single-origin amplification: multiple independent-seeming sources all trace back to the same single origin. The sources are real; the independence is not.
+Hard rule: Wikipedia, unsigned encyclopaedia-style overviews, aggregator sites, and advocacy blogs are never cited as authority. They may be used only to locate the primary source beneath, which must then be verified directly.
 
-FM-03 Interested-party assertion: a claim sourced exclusively to a party with a direct stake in the finding. The claim may be true but is not yet evidenced.
+---
 
-FM-04 Mandate creep: a body cited for conclusions outside its actual mandate. A case being heard is not a verdict. A resolution is evidence of a vote, not evidence of the underlying facts.
+STEP 3 - CHECK PROVENANCE
 
-FM-05 Retracted or superseded source: the source has since been corrected or superseded but continues to circulate.
+Follow the source upstream. Ask: if I trace this claim back through every outlet that has reported it, what is the original source? Does the chain reach a primary source (W1-W3), or does it dead-end at another secondary source, at an interested party, or at nothing?
 
-FM-06 Decontextualised statistic: a real number cited without the context that gives it meaning.
+The pattern to watch for: a claim circulates across many outlets, each citing the previous one. Ten outlets reporting the same claim on the same day is one piece of evidence - the original - not ten. Volume of repetition is not evidence of truth.
 
-FM-07 False precision: a claim stated with numerical specificity that the underlying data does not support.
+---
 
-FM-08 Motive attribution without evidence: intent claimed from outcome alone, without documented orders, statements, or systematic patterns.
+STEP 4 - TEST INDEPENDENCE
 
-FM-09 Isolated quote: one individual's statement cited as representing the policy of an entire organisation or government.
+Convergence of independent lines raises confidence. But independence must be demonstrated, not assumed. Two sources are only independent to the degree they do not share any of the following:
 
-FM-10 Asymmetric application: different evidentiary standards applied to different parties in the same debate.
+1. Origin - same witness, document, or ultimate source
+2. Method - same technique, same blind spots
+3. Data - same underlying dataset
+4. Institution - same body, funder, or pipeline
+5. Motive - same incentive to reach this answer
 
-STEP 4 - ASSESS THE CLAIM
+Dependent repetitions add nothing to evidential weight. Count only genuinely independent lines.
 
-- Does the source cited directly support the specific claim, or is there a gap?
-- What would a primary source for this claim actually look like?
-- Is contradicting evidence from equivalent or stronger sources being ignored?
-- Is the claim consistent with the current state of expert knowledge, or does it rely on outliers?
+---
 
-STEP 5 - RATE THE CLAIM
+STEP 5 - APPLY THE MIRROR RULE
 
-Use this five-band scale:
+Ask: would I apply the same level of scrutiny to an equivalent source or claim on the opposite side of this debate? State your answer explicitly. If the answer is no, adjust until it is yes. This rule applies to the source type, the warrant standard, and the independence test equally.
 
-Established (95-99%+): Multiple independent lines of primary evidence. The current state of the field.
-Probable (70-95%): More likely true than not. Credible sourcing with minor gaps.
-Contested (30-70%): Credible evidence exists on both sides. Genuinely uncertain. Does not mean equally supported.
-Doubtful (5-30%): Weight of evidence points against it. Relies on interested-secondary sources.
-Refuted (<5%): Directly contradicted by primary sources or forensic evidence.
+---
+
+STEP 6 - CHECK FOR NAMED FAILURE MODES
+
+Before rating the claim, check it against this list. If one applies, name it and explain why it matters for this specific claim.
+
+FM-01 Citation laundering: a claim passes through multiple outlets with no source ever citing primary evidence. Repetition creates the appearance of support that does not exist. Trace every source to its origin.
+
+FM-02 Single-origin amplification: multiple independent-seeming sources all trace back to the same single origin. The sources are real; the independence is not. Ten sources citing the same underlying report are one piece of evidence, not ten.
+
+FM-03 Interested-party assertion: a claim sourced exclusively to a party with a direct stake in the finding. The claim may be true but is not yet evidenced. Ask who benefits from this being believed.
+
+FM-04 Mandate creep: a body cited for conclusions outside its actual mandate. A case being heard is not a verdict. A vote in a committee is evidence of the vote, not of the underlying facts. Check what the cited body was actually asked to decide.
+
+FM-05 Retracted or superseded source: the source has since been corrected or superseded by better evidence but continues to circulate. Check whether this is the most recent available finding.
+
+FM-06 Decontextualised statistic: a real number cited without the context that gives it meaning - without comparison to baselines, without methodological notes, without the range around it. The number may be accurate; the claim built on it may not be.
+
+FM-07 False precision: a claim stated with numerical specificity that the underlying data does not support. A single figure cited from a source that itself gives a range or uncertainty interval. Check whether the precision has been silently invented.
+
+FM-08 Motive attribution without evidence: intent claimed from outcome alone, without documented orders, statements, or systematic patterns of behaviour. Intent is a separate factual question from outcome and requires its own direct evidence.
+
+FM-09 Isolated quote: one individual's statement cited as representing the policy or intent of an entire organisation, company, or institution. Ask whether the quote reflects documented official policy or is an individual statement by someone without authority to set policy.
+
+FM-10 Asymmetric application: different evidentiary standards applied to different parties in the same debate. Sources accepted for one side are rejected for the other using different criteria. Apply the mirror rule.
+
+---
+
+STEP 7 - RATE THE CLAIM
+
+Use this five-band scale, anchored to intelligence community estimative probability standards and legal standards of proof:
+
+Established (95-99%+): Multiple genuinely independent lines of primary evidence (W1-W3) converge. The current state of the field. Equivalent to "beyond reasonable doubt." Note: causal, intent, and evaluative claims cannot reach this band regardless of evidence.
+
+Probable (70-95%): More likely true than not. Credible sourcing with minor gaps or some contrary evidence. Equivalent to "clear and convincing."
+
+Contested (30-70%): Credible evidence and argument exist on both sides. Genuinely uncertain. "Contested" does not mean both sides are equally supported - look at which side has the stronger primary sourcing.
+
+Doubtful (5-30%): The weight of evidence points against it. Relies on interested-secondary sources, fails the provenance test, or primary sources do not support it. Fails the civil standard.
+
+Refuted (<5%): Directly contradicted by primary sources or physical evidence. The claim is positively disproved, not merely unproven.
+
+Also state evidential weight: Heavy (many independent lines; hard to move), Moderate (some independent lines; a new study could shift it), or Light (thin sourcing; one document could change everything).
+
+---
 
 OUTPUT FORMAT
 
-Source type: [category from Step 1]
-Known interests / orientation: [what stake this source has - applied equally to all sides]
-Mirror rule: [yes / no - and one line on whether the same standard would apply to the other side]
-Failure mode identified: [name from the list above, or "none identified" - with plain-English explanation of what went wrong]
-Claim assessment: [does the source support the specific claim? Is there a gap? Is contrary evidence being ignored?]
+Claim type: [category from Step 1, and the ceiling this implies]
+Warrant level: [W1-W7 - what the claim ultimately rests on]
+Provenance: [does it trace to a primary source, or does the chain dead-end?]
+Independent lines: [how many genuinely independent lines support it, tested against the five dimensions]
+Mirror rule: [explicitly state whether the same standard would apply to an equivalent claim on the other side]
+Failure mode identified: [name from FM-01 to FM-10, or "none identified" - with plain-English explanation]
 Evidence rating: [Established / Probable / Contested / Doubtful / Refuted]
+Evidential weight: [Heavy / Moderate / Light]
 What would actually establish this: [what primary source or evidence type would settle the question]
 Plain-English verdict: [two to three sentences a non-expert can use]
 
+---
+
 IMPORTANT LIMITS
 
-This checks source reliability and whether a claim is well-supported. It cannot guarantee every factual detail is accurate - AI systems make errors on specific facts. "Interested-secondary" does not mean wrong - it means verify against primary sources before treating as settled. "Contested" does not mean both sides are equally supported - look at which side has the stronger primary evidence.
+This checks source reliability and whether a claim is well-supported. It cannot guarantee every factual detail is accurate - AI systems make errors on specific facts. "Interested-secondary" does not mean wrong - it means verify against primary sources before treating as settled. "Contested" does not mean both sides are equally supported - look at which side has the stronger primary evidence. A claim being widely believed is not evidence it is true.
 
 ---
 
 Now paste the source or claim you want checked:</div>
-      <div class="prompt-instructions">Paste into Claude, ChatGPT, Gemini, or any other AI assistant. Add your source or claim at the bottom. Works on any topic.</div>
+      <div class="prompt-instructions">Paste into Claude, ChatGPT, Gemini, or any other AI assistant. Add your source or claim at the bottom. Works on any topic - climate, economics, health, business, politics, or news.</div>
     </div>
   </div>
 </section>
